@@ -11,6 +11,7 @@ import { hangup } from '../../../base/connection/actions.web';
 import { isMobileBrowser } from '../../../base/environment/utils.web';
 import { translate } from '../../../base/i18n/functions';
 import AudioTracksContainer from '../../../base/media/components/web/AudioTracksContainer';
+import { VIDEO_TYPE } from '../../../base/media/constants';
 import { setColorAlpha } from '../../../base/util/helpers';
 import { openChat, setFocusedTab } from '../../../chat/actions.web';
 import Chat from '../../../chat/components/web/Chat';
@@ -47,6 +48,9 @@ import {
     abstractMapStateToProps
 } from '../AbstractConference';
 
+import CinemaFullscreenButton from './CinemaFullscreenButton';
+import CinemaScreenShareLayout from './CinemaScreenShareLayout';
+import CinemaSessionStatus from './CinemaSessionStatus';
 import ConferenceInfo from './ConferenceInfo';
 import { default as Notice } from './Notice';
 
@@ -77,6 +81,11 @@ interface IProps extends AbstractProps, WithTranslation {
      * Are any overlays visible?
      */
     _isAnyOverlayVisible: boolean;
+
+    /**
+     * Whether or not the local participant is sharing their screen.
+     */
+    _isLocalScreenSharing: boolean;
 
     /**
      * The CSS class to apply to the root of {@link Conference} to modify the
@@ -249,6 +258,8 @@ class Conference extends AbstractConference<IProps, any> {
         } = this.props;
 
         const videospaceClassName = _timerExpired ? 'timer-expired' : undefined;
+        const conferenceClassName = `${_layoutClassName}${this.props._isLocalScreenSharing
+            ? ' cinema-screen-share-active' : ''}`;
 
         if (_reducedUI) {
             return (
@@ -260,7 +271,7 @@ class Conference extends AbstractConference<IProps, any> {
                     ref = { this._setBackground }>
                     <Chat />
                     <div
-                        className = { _layoutClassName }
+                        className = { conferenceClassName }
                         id = 'videoconference_page'
                         onMouseMove = { isMobileBrowser() ? undefined : this._onShowToolbar }>
                         <ConferenceInfo />
@@ -270,6 +281,9 @@ class Conference extends AbstractConference<IProps, any> {
                             id = 'videospace'
                             onTouchStart = { this._onVideospaceTouchStart }>
                             <LargeVideo />
+                            <CinemaScreenShareLayout />
+                            <CinemaFullscreenButton />
+                            <CinemaSessionStatus />
                         </div>
                         <AudioTracksContainer />
                         <span
@@ -293,7 +307,7 @@ class Conference extends AbstractConference<IProps, any> {
                 ref = { this._setBackground }>
                 <Chat />
                 <div
-                    className = { _layoutClassName }
+                    className = { conferenceClassName }
                     id = 'videoconference_page'
                     onMouseMove = { isMobileBrowser() ? undefined : this._onShowToolbar }>
                     { _showPrejoin || _showLobby || <ConferenceInfo /> }
@@ -303,6 +317,9 @@ class Conference extends AbstractConference<IProps, any> {
                         id = 'videospace'
                         onTouchStart = { this._onVideospaceTouchStart }>
                         <LargeVideo />
+                        <CinemaScreenShareLayout />
+                        <CinemaFullscreenButton />
+                        {_showPrejoin || _showLobby || <CinemaSessionStatus />}
                         {
                             _showPrejoin || _showLobby || (<>
                                 <StageFilmstrip />
@@ -472,11 +489,14 @@ function _mapStateToProps(state: IReduxState) {
     const { backgroundAlpha, mouseMoveCallbackInterval } = state['features/base/config'];
     const { overflowDrawer } = state['features/toolbox'];
     const { reducedUI } = state['features/base/responsive-ui'];
+    const isScreenSharing = state['features/base/tracks']
+        .some(track => track.videoType === VIDEO_TYPE.DESKTOP && !track.muted);
 
     return {
         ...abstractMapStateToProps(state),
         _backgroundAlpha: backgroundAlpha,
         _isAnyOverlayVisible: Boolean(getOverlayToRender(state)),
+        _isLocalScreenSharing: isScreenSharing,
         _layoutClassName: LAYOUT_CLASSNAMES[getCurrentLayout(state) ?? ''],
         _mouseMoveCallbackInterval: mouseMoveCallbackInterval,
         _overflowDrawer: overflowDrawer,

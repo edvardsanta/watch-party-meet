@@ -142,6 +142,12 @@ var config = {
     // Disables chat feature entirely including notifications, sounds, and private messages.
     // disableChat: false,
 
+    // Watch-party defaults: keep the experience focused on screen share, audio and chat.
+    disablePolls: true,
+    disableReactions: true,
+    disableSelfView: true,
+    disableSelfViewSettings: true,
+
     // Disables demote button from self-view
     // disableSelfDemote: false,
 
@@ -206,14 +212,14 @@ var config = {
 
     // Start the conference in audio only mode (no video is being received nor
     // sent).
-    // startAudioOnly: false,
+    startAudioOnly: false,
 
     // Every participant after the Nth will start audio muted.
     // startAudioMuted: 10,
 
     // Start calls with audio muted. Unlike the option above, this one is only
     // applied locally. FIXME: having these 2 options is confusing.
-    // startWithAudioMuted: false,
+    startWithAudioMuted: false,
 
     // Enabling it (with #params) will disable local audio output of remote
     // participants and to enable it back a reload is needed.
@@ -379,7 +385,7 @@ var config = {
 
     // Start calls with video muted. Unlike the option above, this one is only
     // applied locally. FIXME: having these 2 options is confusing.
-    // startWithVideoMuted: false,
+    startWithVideoMuted: true,
 
     // Desktop sharing
 
@@ -744,6 +750,7 @@ var config = {
     //     // If set, landing page will redirect to this URL.
     //     customUrl: ''
     // },
+    enableWelcomePage: false,
 
     // Configs for the lobby screen.
     // lobby: {
@@ -778,6 +785,20 @@ var config = {
     // Setting this to null, will also disable showing the remote videos
     // when the toolbar is shown on mouse movements
     // disable1On1Mode: null | false | true,
+    disable1On1Mode: null,
+
+    filmstrip: {
+        // Cinema Party keeps the shared screen as the primary surface.
+        disabled: true,
+        disableResizable: true,
+        disableStageFilmstrip: true,
+        disableTopPanel: true,
+        alwaysShowResizeBar: false
+    },
+
+    tileView: {
+        disabled: true
+    },
 
     // Default local name to be displayed
     // defaultLocalDisplayName: 'me',
@@ -837,6 +858,13 @@ var config = {
     //     // Shows the hangup button in the lobby screen.
     //     showHangUp: true,
     // },
+    hiddenPremeetingButtons: [ 'camera', 'select-background', 'invite', 'settings' ],
+    prejoinConfig: {
+        enabled: true,
+        hideDisplayName: false,
+        hideExtraJoinButtons: [ 'no-audio', 'by-phone' ],
+        showHangUp: false
+    },
 
     // When 'true', the user cannot edit the display name.
     // (Mainly useful when used in conjunction with the JWT so the JWT name becomes read only.)
@@ -934,6 +962,8 @@ var config = {
     //     // Default background color for the main toolbar. Accepts any valid CSS color.
     //     // backgroundColor: '#ffffff',
     // },
+
+    toolbarButtons: [ 'microphone', 'desktop', 'shareaudio', 'chat', 'settings', 'hangup' ],
 
     // Overrides the buttons displayed in the main toolbar. Depending on the screen size the number of displayed
     // buttons varies from 2 buttons to 8 buttons. Every array in the mainToolbarButtons array will replace the

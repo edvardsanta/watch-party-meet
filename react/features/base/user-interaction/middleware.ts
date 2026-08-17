@@ -8,9 +8,9 @@ import { USER_INTERACTION_RECEIVED } from './actionTypes';
  * Reference to any callback that has been created to be invoked on user
  * interaction.
  *
- * @type {Function|null}
+ * @type {EventListener|null}
  */
-let userInteractionListener: Function | null = null;
+let userInteractionListener: EventListener | null = null;
 
 /**
  * Implements the entry point of the middleware of the feature base/user-interaction.
@@ -62,10 +62,11 @@ function _startListeningForUserInteraction({ dispatch }: { dispatch: IStore['dis
 
     userInteractionListener = _onUserInteractionReceived.bind(null, dispatch);
 
-    // @ts-ignore
     window.addEventListener('mousedown', userInteractionListener);
+    window.addEventListener('pointerdown', userInteractionListener);
+    window.addEventListener('touchstart', userInteractionListener);
+    window.addEventListener('click', userInteractionListener);
 
-    // @ts-ignore
     window.addEventListener('keydown', userInteractionListener);
 }
 
@@ -76,10 +77,14 @@ function _startListeningForUserInteraction({ dispatch }: { dispatch: IStore['dis
  * @returns {void}
  */
 function _stopListeningForUserInteraction() {
-    // @ts-ignore
-    window.removeEventListener('mousedown', userInteractionListener);
+    if (!userInteractionListener) {
+        return;
+    }
 
-    // @ts-ignore
+    window.removeEventListener('mousedown', userInteractionListener);
+    window.removeEventListener('pointerdown', userInteractionListener);
+    window.removeEventListener('touchstart', userInteractionListener);
+    window.removeEventListener('click', userInteractionListener);
     window.removeEventListener('keydown', userInteractionListener);
 
     userInteractionListener = null;

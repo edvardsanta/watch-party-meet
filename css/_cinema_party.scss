@@ -1,0 +1,256 @@
+.cinema-auth-screen {
+    align-items: center;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(180, 40, 58, .28), transparent 34%),
+        linear-gradient(180deg, #151316 0%, #050506 100%);
+    box-sizing: border-box;
+    color: #fff;
+    display: flex;
+    inset: 0;
+    justify-content: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow: auto;
+    padding: 24px;
+    position: fixed;
+    z-index: 10000;
+}
+
+.cinema-auth-panel {
+    background: rgba(12, 12, 14, .88);
+    border: 1px solid rgba(255, 255, 255, .14);
+    border-radius: 8px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, .45);
+    box-sizing: border-box;
+    max-width: 420px;
+    padding: 28px;
+    width: 100%;
+}
+
+.cinema-auth-panel .input-control,
+.cinema-auth-panel input {
+    box-sizing: border-box;
+    max-width: 100%;
+    width: 100%;
+}
+
+.cinema-auth-panel h1 {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 34px;
+    margin: 0 0 10px;
+}
+
+.cinema-auth-panel p {
+    color: rgba(255, 255, 255, .72);
+    font-size: 15px;
+    line-height: 22px;
+    margin: 0 0 24px;
+}
+
+.cinema-auth-eyebrow {
+    color: #ffb4a8;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 16px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.cinema-auth-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.cinema-auth-actions button {
+    flex: 1;
+    min-width: 0;
+}
+
+.cinema-auth-message {
+    color: rgba(255, 255, 255, .78);
+    display: block;
+    font-size: 13px;
+    line-height: 18px;
+    margin-top: 10px;
+}
+
+#largeVideoBackgroundContainer {
+    display: none;
+}
+
+#largeVideo,
+#largeVideoWrapper {
+    box-shadow: none;
+    object-fit: contain;
+}
+
+#largeVideoWrapper > video,
+#largeVideoWrapper > object {
+    object-fit: contain;
+}
+
+.cinema-fullscreen-button {
+    align-items: center;
+    background: rgba(0, 0, 0, .58);
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    position: fixed;
+    right: 16px;
+    top: 16px;
+    width: 40px;
+    z-index: 1000;
+}
+
+.cinema-fullscreen-button:hover,
+.cinema-fullscreen-button:focus-visible {
+    background: rgba(255, 255, 255, .16);
+    outline: none;
+}
+
+.cinema-screen-share-active {
+    height: 100dvh;
+    overflow: hidden;
+    width: 100dvw;
+
+    #videospace,
+    #largeVideoContainer,
+    #largeVideoElementsContainer,
+    #largeVideoWrapper,
+    #largeVideo {
+        inset: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        height: 100% !important;
+        max-height: none !important;
+        max-width: none !important;
+        transform: none !important;
+        width: 100% !important;
+    }
+
+    #largeVideoWrapper,
+    #largeVideo,
+    #largeVideoWrapper > object,
+    #largeVideoWrapper > video {
+        height: 100% !important;
+        object-fit: contain !important;
+        width: 100% !important;
+    }
+
+    .filmstrip,
+    .resizable-filmstrip,
+    .toggleFilmstripContainer,
+    #remoteVideos,
+    #filmstripLocalVideo {
+        display: none !important;
+        max-width: 0 !important;
+        width: 0 !important;
+    }
+}
+
+#largeVideoContainer:fullscreen,
+#largeVideoContainer:-webkit-full-screen {
+    height: 100dvh !important;
+    width: 100dvw !important;
+
+    #largeVideoElementsContainer,
+    #largeVideoWrapper,
+    #largeVideo,
+    #largeVideoWrapper > object,
+    #largeVideoWrapper > video {
+        height: 100% !important;
+        inset: 0 !important;
+        object-fit: contain !important;
+        width: 100% !important;
+    }
+}
+
+@media (orientation: landscape) and (max-height: 480px) {
+    .cinema-fullscreen-button {
+        height: 36px;
+        right: max(8px, env(safe-area-inset-right));
+        top: max(8px, env(safe-area-inset-top));
+        width: 36px;
+    }
+
+    .premeeting-screen {
+        overflow: hidden;
+    }
+
+    .premeeting-screen > div:first-child {
+        flex: 0 0 min(360px, 44dvw);
+        max-width: 360px;
+        min-width: 280px;
+        overflow: auto;
+    }
+
+    #preview {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .cinema-auth-screen {
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: max(18px, env(safe-area-inset-top)) 14px max(18px, env(safe-area-inset-bottom));
+    }
+
+    .cinema-auth-panel {
+        border-radius: 0;
+        box-shadow: none;
+        min-height: calc(100dvh - 36px);
+        padding: 22px 18px;
+    }
+
+    .cinema-auth-panel h1 {
+        font-size: 24px;
+        line-height: 30px;
+    }
+
+    .cinema-auth-panel p {
+        font-size: 14px;
+        line-height: 20px;
+        margin-bottom: 20px;
+    }
+
+    .cinema-auth-actions {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    #largeVideoWrapper {
+        height: 100% !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+    }
+
+    .filmstrip,
+    .resizable-filmstrip,
+    .toggleFilmstripContainer {
+        display: none !important;
+    }
+
+    #largeVideoContainer,
+    #largeVideoElementsContainer,
+    #videospace {
+        width: 100% !important;
+    }
+
+    .cinema-fullscreen-button {
+        right: max(12px, env(safe-area-inset-right));
+        top: max(12px, env(safe-area-inset-top));
+    }
+}

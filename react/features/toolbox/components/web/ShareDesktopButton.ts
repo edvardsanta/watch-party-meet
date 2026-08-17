@@ -12,6 +12,10 @@ import { isScreenVideoShared } from '../../../screen-share/functions';
 import { closeOverflowMenuIfOpen } from '../../actions.web';
 import { isDesktopShareButtonDisabled } from '../../functions.web';
 
+const isScreenShareAvailable = () =>
+    JitsiMeetJS.isDesktopSharingEnabled()
+        || Boolean(navigator.mediaDevices?.getDisplayMedia);
+
 interface IProps extends AbstractButtonProps {
 
     /**
@@ -104,12 +108,12 @@ const mapStateToProps = (state: IReduxState) => {
     // Disable the screen-share button if the video sender limit is reached and there is no video or media share in
     // progress.
     const desktopSharingEnabled
-        = JitsiMeetJS.isDesktopSharingEnabled() && !isDesktopShareButtonDisabled(state);
+        = isScreenShareAvailable() && !isDesktopShareButtonDisabled(state);
 
     return {
         _desktopSharingEnabled: desktopSharingEnabled,
         _screensharing: isScreenVideoShared(state),
-        visible: JitsiMeetJS.isDesktopSharingEnabled()
+        visible: isScreenShareAvailable()
     };
 };
 

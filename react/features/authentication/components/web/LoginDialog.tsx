@@ -9,8 +9,9 @@ import { connect } from '../../../base/connection/actions.web';
 import { toJid } from '../../../base/connection/functions';
 import { translate, translateToHTML } from '../../../base/i18n/functions';
 import { JitsiConnectionErrors } from '../../../base/lib-jitsi-meet';
-import Dialog from '../../../base/ui/components/web/Dialog';
+import Button from '../../../base/ui/components/web/Button';
 import Input from '../../../base/ui/components/web/Input';
+import { BUTTON_TYPES } from '../../../base/ui/constants.any';
 import {
     authenticateAndUpgradeRole,
     cancelLogin
@@ -206,7 +207,7 @@ class LoginDialog extends Component<IProps, IState> {
 
         if (messageKey) {
             return (
-                <span>
+                <span className = 'cinema-auth-message'>
                     { translateToHTML(t, messageKey, messageOptions) }
                 </span>
             );
@@ -226,42 +227,51 @@ class LoginDialog extends Component<IProps, IState> {
             t
         } = this.props;
         const { password, username } = this.state;
+        const disabled = connecting || !password || !username;
 
         return (
-            <Dialog
-                disableAutoHideOnSubmit = { true }
-                disableBackdropClose = { true }
-                hideCloseButton = { true }
-                ok = {{
-                    disabled: connecting
-                        || !password
-                        || !username,
-                    translationKey: 'dialog.login'
-                }}
-                onCancel = { this._onCancelLogin }
-                onSubmit = { this._onLogin }
-                titleKey = { t('dialog.authenticationRequired') }>
-                <Input
-                    autoFocus = { true }
-                    id = 'login-dialog-username'
-                    label = { t('dialog.user') }
-                    name = 'username'
-                    onChange = { this._onUsernameChange }
-                    placeholder = { t('dialog.userIdentifier') }
-                    type = 'text'
-                    value = { username } />
-                <br />
-                <Input
-                    className = 'dialog-bottom-margin'
-                    id = 'login-dialog-password'
-                    label = { t('dialog.userPassword') }
-                    name = 'password'
-                    onChange = { this._onPasswordChange }
-                    placeholder = { t('dialog.password') }
-                    type = 'password'
-                    value = { password } />
-                { this.renderMessage() }
-            </Dialog>
+            <div className = 'cinema-auth-screen'>
+                <div className = 'cinema-auth-panel'>
+                    <div className = 'cinema-auth-eyebrow'>
+                        {t('cinemaParty.auth.privateSession')}
+                    </div>
+                    <h1>{t('cinemaParty.auth.loginTitle')}</h1>
+                    <p>{t('cinemaParty.auth.loginDescription')}</p>
+                    <Input
+                        autoFocus = { true }
+                        id = 'login-dialog-username'
+                        label = { t('cinemaParty.auth.username') }
+                        name = 'username'
+                        onChange = { this._onUsernameChange }
+                        placeholder = { t('cinemaParty.auth.usernamePlaceholder') }
+                        type = 'text'
+                        value = { username } />
+                    <br />
+                    <Input
+                        className = 'dialog-bottom-margin'
+                        id = 'login-dialog-password'
+                        label = { t('cinemaParty.auth.password') }
+                        name = 'password'
+                        onChange = { this._onPasswordChange }
+                        placeholder = { t('cinemaParty.auth.passwordPlaceholder') }
+                        type = 'password'
+                        value = { password } />
+                    { this.renderMessage() }
+                    <div className = 'cinema-auth-actions'>
+                        <Button
+                            accessibilityLabel = { t('cinemaParty.auth.unlockSession') }
+                            disabled = { disabled }
+                            labelKey = 'cinemaParty.auth.unlockSession'
+                            onClick = { this._onLogin }
+                            type = { BUTTON_TYPES.PRIMARY } />
+                        <Button
+                            accessibilityLabel = { t('dialog.Cancel') }
+                            labelKey = 'dialog.Cancel'
+                            onClick = { this._onCancelLogin }
+                            type = { BUTTON_TYPES.SECONDARY } />
+                    </div>
+                </div>
+            </div>
         );
     }
 }

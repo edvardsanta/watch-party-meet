@@ -259,6 +259,11 @@ const Prejoin = ({
 
         logger.info('Prejoin join button clicked.');
 
+        dispatchUpdateSettings({
+            startSilent: false,
+            startWithAudioMuted: false
+        });
+
         joinConference();
     };
 
@@ -387,7 +392,7 @@ const Prejoin = ({
     const onInputKeyPress = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
             logger.info('Dispatching join conference on Enter key press from the prejoin screen.');
-            joinConference();
+            onJoinButtonClick();
         }
     };
 
@@ -406,14 +411,14 @@ const Prejoin = ({
             showDeviceStatus = { deviceStatusVisible }
             showRecordingWarning = { showRecordingWarning }
             showUnsafeRoomWarning = { showUnsafeRoomWarning }
-            title = { t('prejoin.joinMeeting') }
+            title = { t('cinemaParty.prejoin.title') }
             videoMuted = { !showCameraPreview }
             videoTrack = { videoTrack }>
             <div
                 className = { classes.inputContainer }
                 data-testid = 'prejoin.screen'>
                 {showDisplayNameField ? (<Input
-                    accessibilityLabel = { t('dialog.enterDisplayName') }
+                    accessibilityLabel = { t('cinemaParty.prejoin.nameLabel') }
                     autoComplete = { 'name' }
                     autoFocus = { true }
                     className = { classes.input }
@@ -422,9 +427,9 @@ const Prejoin = ({
                     id = 'premeeting-name-input'
                     onChange = { setName }
                     onKeyPress = { showUnsafeRoomWarning && !unsafeRoomConsent ? undefined : onInputKeyPress }
-                    placeholder = { t('dialog.enterDisplayName') }
+                    placeholder = { t('cinemaParty.prejoin.nameLabel') }
                     readOnly = { readOnlyName }
-                    required = { true }
+                    required = { false }
                     value = { name } />
                 ) : (
                     <div className = { classes.avatarContainer }>
@@ -443,7 +448,7 @@ const Prejoin = ({
                     <p
                         aria-live = 'polite'
                         id = 'prejoin-error-missing-name' >
-                        {t('prejoin.errorMissingName')}
+                        {t('cinemaParty.prejoin.errorMissingName')}
                     </p>
                 </div>}
 
@@ -466,7 +471,7 @@ const Prejoin = ({
                         <ActionButton
                             OptionsIcon = { showJoinByPhoneButtons ? IconArrowUp : IconArrowDown }
                             ariaDropDownLabel = { t('prejoin.joinWithoutAudio') }
-                            ariaLabel = { t('prejoin.joinMeeting') }
+                            ariaLabel = { t('cinemaParty.prejoin.joinSession') }
                             ariaPressed = { showJoinByPhoneButtons }
                             disabled = { joiningInProgress
                                 || (showUnsafeRoomWarning && !unsafeRoomConsent)
@@ -478,7 +483,7 @@ const Prejoin = ({
                             tabIndex = { 0 }
                             testId = 'prejoin.joinMeeting'
                             type = 'primary'>
-                            {t('prejoin.joinMeeting')}
+                            {t('cinemaParty.prejoin.joinSession')}
                         </ActionButton>
                     </Popover>
                 </div>

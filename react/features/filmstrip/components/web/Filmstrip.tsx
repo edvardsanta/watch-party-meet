@@ -16,6 +16,7 @@ import Icon from '../../../base/icons/components/Icon';
 import { IconArrowDown, IconArrowUp } from '../../../base/icons/svg';
 import { isNarrowScreenWithChatOpen } from '../../../base/responsive-ui/functions';
 import { getHideSelfView } from '../../../base/settings/functions.any';
+import { VIDEO_TYPE } from '../../../base/media/constants';
 import { registerShortcut, unregisterShortcut } from '../../../keyboard-shortcuts/actions';
 import { showToolbox } from '../../../toolbox/actions.web';
 import { isToolboxVisible } from '../../../toolbox/functions.web';
@@ -355,6 +356,11 @@ export interface IProps extends WithTranslation {
     _isTouchDevice?: boolean;
 
     /**
+     * Whether or not the local participant is sharing their screen.
+     */
+    _isLocalScreenSharing: boolean;
+
+    /**
      * Whether or not the current layout is vertical filmstrip.
      */
     _isVerticalFilmstrip: boolean;
@@ -592,6 +598,7 @@ class Filmstrip extends PureComponent <IProps, IState> {
             _currentLayout,
             _disableSelfView,
             _filmstripDisabled,
+            _isLocalScreenSharing,
             _localScreenShareId,
             _mainFilmstripVisible,
             _resizableFilmstrip,
@@ -607,6 +614,14 @@ class Filmstrip extends PureComponent <IProps, IState> {
         const classes = withStyles.getClasses(this.props);
         const { isMouseDown } = this.state;
         const tileViewActive = _currentLayout === LAYOUTS.TILE_VIEW;
+
+        if (_filmstripDisabled) {
+            return null;
+        }
+
+        if (_isLocalScreenSharing) {
+            return null;
+        }
 
         if (_currentLayout === LAYOUTS.STAGE_FILMSTRIP_VIEW && filmstripType === FILMSTRIP_TYPE.STAGE) {
             if (_topPanelFilmstrip) {
@@ -1201,6 +1216,8 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
     const disableSelfView = getHideSelfView(state);
     const { videoSpaceWidth, clientHeight } = state['features/base/responsive-ui'];
     const filmstripDisabled = isFilmstripDisabled(state);
+    const screenSharing = state['features/base/tracks']
+        .some(track => track.videoType === VIDEO_TYPE.DESKTOP && !track.muted);
 
     const collapseTileView = reduceHeight
         && isMobileBrowser()
@@ -1233,6 +1250,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
         _hasScroll,
         _iAmRecorder: Boolean(iAmRecorder),
         _isNarrowScreenWithChatOpen: isNarrowScreenWithChatOpen(state),
+        _isLocalScreenSharing: screenSharing,
         _isToolboxVisible: isToolboxVisible(state),
         _isVerticalFilmstrip,
         _localScreenShareId: localScreenShare?.id,
