@@ -119,3 +119,20 @@ react-native-sdk/sounds
 tests/.env
 test-results
 
+# Local Docker/self-hosting config
+docker/jitsi-core/.env
+docker/jitsi-core/.env.*
+!docker/jitsi-core/.env.example
+.jitsi-meet-cfg/
+
+# Infrastructure local state and secrets
+infra/terraform/.terraform/
+infra/terraform/.terraform.lock.hcl
+infra/terraform/*.tfstate
+infra/terraform/*.tfstate.*
+infra/terraform/*.tfvars
+!infra/terraform/*.tfvars.example
+infra/ansible/inventory.generated.ini
+infra/ansible/group_vars/production.yml
+infra/ansible/vault.yml
+infra/ansible/*.retry
