@@ -1,0 +1,95 @@
+# Jitsi Docker Core
+
+This directory vendors the core runtime from `docker-jitsi-meet` inside this repository.
+
+It intentionally keeps only the services needed for the Cinema Party/watch-party stack:
+
+- `web`
+- `prosody`
+- `jicofo`
+- `jvb`
+- `base`
+- `base-java`
+
+Optional services such as Jibri, Jigasi, Etherpad, monitoring, recording, transcription and whiteboard are not included here.
+
+## Local Run
+
+From this directory:
+
+```bash
+cp env.example .env
+./gen-passwords.sh
+docker compose up -d
+```
+
+For local HTTPS testing, set these values in `.env`:
+
+```env
+CONFIG=~/.jitsi-meet-cfg
+HTTP_PORT=8000
+HTTPS_PORT=8443
+PUBLIC_URL=https://localhost:8443
+ENABLE_WELCOME_PAGE=0
+ENABLE_PREJOIN_PAGE=1
+DISABLE_HTTPS=0
+ENABLE_XMPP_WEBSOCKET=0
+BOSH_RELATIVE=1
+CINEMA_BASIC_AUTH=1
+CINEMA_BASIC_AUTH_FILE=/config/nginx/cinema.htpasswd
+JITSI_IMAGE_VERSION=stable-10978
+```
+
+Create the two local Basic Auth users before starting the stack:
+
+```bash
+./scripts/set-cinema-auth.sh eu ela
+```
+
+The script prints the generated passwords once and writes the nginx htpasswd file
+under `${CONFIG}/web/nginx/cinema.htpasswd`.
+
+Then open:
+
+```text
+https://localhost:8443/cinema
+```
+
+Use `localhost` exactly. The generated `config.js` derives the BOSH and XMPP
+WebSocket URLs from `PUBLIC_URL`; opening the room as
+`https://127.0.0.1:8443/cinema` while `PUBLIC_URL` is set to
+`https://localhost:8443` can make the web UI load but fail the conference
+connection with a “You have been disconnected” message.
+
+## Local Frontend Work
+
+The Docker core can run with official images while the frontend is being customized in the repository root.
+
+To test the local `jitsi-meet` frontend inside the Docker stack, build the web assets from the repository root:
+
+```bash
+npm install
+make compile deploy
+```
+
+Then run the stack from this directory with the local web override:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.local-web.yml up -d --build
+```
+
+Open:
+
+```text
+https://localhost:8443/cinema
+```
+
+If the browser shows a disconnected/reconnecting message, first confirm the page
+URL uses the same host as `PUBLIC_URL` in `.env`. For the default local setup,
+that means `https://localhost:8443/cinema`, not `https://127.0.0.1:8443/cinema`.
+The local stack disables XMPP WebSocket and uses relative BOSH (`/http-bind`) to
+avoid Firefox rejecting the self-signed certificate on `wss://localhost:8443`.
+
+The override builds `cinema-party/jitsi-web:local` from the official Jitsi `web` image and replaces only the static web assets compiled from this repository. Runtime meeting config still comes from Docker env/config files and optional `/config/web/custom-config.js`.
+
+The default image version is pinned to `stable-10978` for `web`, `prosody`, `jicofo` and `jvb`. Change `JITSI_IMAGE_VERSION` deliberately when we decide to upgrade the base stack.

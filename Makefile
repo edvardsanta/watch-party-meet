@@ -77,7 +77,7 @@ deploy-olm:
 deploy-tf-wasm:
 	cp \
 		$(TF_WASM_DIR)/*.wasm \
-		$(DEPLOY_DIR)
+		$(DEPLOY_DIR) || true
 
 deploy-rnnoise-binary:
 	cp \

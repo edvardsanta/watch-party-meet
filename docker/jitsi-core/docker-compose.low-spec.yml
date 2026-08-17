@@ -1,0 +1,50 @@
+# Local resource-limit override to simulate a very small DigitalOcean Droplet:
+# 1 vCPU, 512 MB RAM, 10 GB SSD class.
+#
+# Usage:
+#   docker compose \
+#     -f docker-compose.yml \
+#     -f docker-compose.local-web.yml \
+#     -f docker-compose.low-spec.yml \
+#     up -d --build --force-recreate
+#
+# Notes:
+# - Compose can limit CPU and memory per container.
+# - Compose cannot faithfully emulate a 10 GB SSD quota unless the Docker
+#   daemon/storage driver is configured for per-container disk quotas.
+# - This profile is intentionally aggressive and may fail under real calls.
+
+x-low-spec-logging: &low-spec-logging
+    driver: json-file
+    options:
+        max-size: "5m"
+        max-file: "2"
+
+services:
+    web:
+        cpus: 0.20
+        mem_limit: 96m
+        memswap_limit: 128m
+        pids_limit: 256
+        logging: *low-spec-logging
+
+    prosody:
+        cpus: 0.15
+        mem_limit: 96m
+        memswap_limit: 128m
+        pids_limit: 256
+        logging: *low-spec-logging
+
+    jicofo:
+        cpus: 0.25
+        mem_limit: 160m
+        memswap_limit: 192m
+        pids_limit: 256
+        logging: *low-spec-logging
+
+    jvb:
+        cpus: 0.40
+        mem_limit: 160m
+        memswap_limit: 192m
+        pids_limit: 384
+        logging: *low-spec-logging
