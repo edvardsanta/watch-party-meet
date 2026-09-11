@@ -83,9 +83,6 @@ class WaitForOwnerDialog extends PureComponent<IProps> {
         return (
             <div className = 'cinema-auth-screen'>
                 <div className = 'cinema-auth-panel'>
-                    <div className = 'cinema-auth-eyebrow'>
-                        {t('cinemaParty.auth.privateSession')}
-                    </div>
                     <h1>{t('cinemaParty.auth.waitingTitle')}</h1>
                     <p>
                         {this.props._hideLoginButton

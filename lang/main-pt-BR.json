@@ -42,42 +42,6 @@
     "audioOnly": {
         "audioOnly": "Largura de banda baixa"
     },
-    "cinemaParty": {
-        "auth": {
-            "hostLogin": "Entrar como anfitrião",
-            "inviteOnly": "Sala apenas para convidados",
-            "loginDescription": "Use as credenciais do anfitrião para esta sessão privada.",
-            "loginTitle": "Desbloquear sala",
-            "password": "Senha da sessão",
-            "passwordPlaceholder": "Digite a senha",
-            "privateSession": "Cinema Party privada",
-            "unlockSession": "Iniciar sessão",
-            "username": "Nome do anfitrião",
-            "usernamePlaceholder": "Digite o nome do anfitrião",
-            "waitAsGuest": "Aguardar como convidado",
-            "waitingDescription": "Esta sala começa quando o anfitrião desbloqueia. Se esta sessão for sua, continue como anfitrião.",
-            "waitingGuestDescription": "A sala está pronta, mas o anfitrião ainda não iniciou a sessão.",
-            "waitingTitle": "Aguardando o anfitrião"
-        },
-        "fullscreen": {
-            "enter": "Entrar em tela cheia"
-        },
-        "prejoin": {
-            "errorMissingName": "Digite seu nome para entrar na sessão",
-            "joinSession": "Entrar na sessão",
-            "nameLabel": "Seu nome no cinema (opcional)",
-            "title": "Pronto para a noite de cinema?"
-        },
-        "status": {
-            "chatOpen": "O chat está aberto ao lado da tela.",
-            "inviteOnePerson": "Envie o link desta sala para exatamente uma pessoa.",
-            "sharePrompt": "Comece a compartilhar a tela quando estiver pronto para assistir.",
-            "tooManyPeople": "Esta sessão foi feita para duas pessoas.",
-            "twoPersonLimit": "Peça para os convidados extras saírem antes de iniciar o filme.",
-            "waitingForGuest": "Aguardando seu convidado",
-            "waitingForShare": "Aguardando a tela"
-        }
-    },
     "bandwidthSettings": {
         "assumedBandwidthBps": "Ex. 10000000 para 10 Mbps",
         "assumedBandwidthBpsWarning": "Valores mais altos podem causar erros de rede.",
@@ -178,6 +142,46 @@
         "close": "Fechar",
         "dontShowAgain": "Não me mostre isso de novo",
         "installExtensionText": "Instale a extensão para integrar com Google Calendar e Office 365"
+    },
+    "cinemaParty": {
+        "auth": {
+            "hostLogin": "Entrar como anfitrião",
+            "inviteOnly": "Sala apenas para convidados",
+            "loginDescription": "Use as credenciais do anfitrião para esta sessão privada.",
+            "loginTitle": "Desbloquear sala",
+            "password": "Senha da sessão",
+            "passwordPlaceholder": "Digite a senha",
+            "roomPasswordDescription": "Esta sala está trancada. Digite a palavra-chave compartilhada para entrar.",
+            "roomPasswordLabel": "Palavra-chave",
+            "roomPasswordPlaceholder": "Digite a palavra-chave",
+            "roomPasswordTitle": "Digite a palavra-chave",
+            "unlockRoom": "Entrar",
+            "unlockSession": "Iniciar sessão",
+            "username": "Nome do anfitrião",
+            "usernamePlaceholder": "Digite o nome do anfitrião",
+            "waitAsGuest": "Aguardar como convidado",
+            "waitingDescription": "Esta sala começa quando o anfitrião desbloqueia. Se esta sessão for sua, continue como anfitrião.",
+            "waitingGuestDescription": "A sala está pronta, mas o anfitrião ainda não iniciou a sessão.",
+            "waitingTitle": "Aguardando o anfitrião"
+        },
+        "fullscreen": {
+            "enter": "Entrar em tela cheia"
+        },
+        "prejoin": {
+            "errorMissingName": "Digite seu nome para entrar na sessão",
+            "joinSession": "Entrar na sessão",
+            "nameLabel": "Seu nome (opcional)",
+            "title": "Pronto para assistir?"
+        },
+        "status": {
+            "chatOpen": "O chat está aberto ao lado da tela.",
+            "inviteOnePerson": "Envie o link desta sala para exatamente uma pessoa.",
+            "sharePrompt": "Comece a compartilhar a tela quando estiver pronto para assistir.",
+            "tooManyPeople": "Esta sessão foi feita para duas pessoas.",
+            "twoPersonLimit": "Peça para os convidados extras saírem antes de iniciar.",
+            "waitingForGuest": "Aguardando seu convidado",
+            "waitingForShare": "Aguardando a tela"
+        }
     },
     "connectingOverlay": {
         "joiningRoom": "Conectando você à reunião…"

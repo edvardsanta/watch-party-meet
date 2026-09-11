@@ -35,19 +35,21 @@ ENABLE_PREJOIN_PAGE=1
 DISABLE_HTTPS=0
 ENABLE_XMPP_WEBSOCKET=0
 BOSH_RELATIVE=1
-CINEMA_BASIC_AUTH=1
-CINEMA_BASIC_AUTH_FILE=/config/nginx/cinema.htpasswd
+XMPP_MUC_MODULES=muc_default_password
+WATCHPARTY_ROOM_PASSWORD=changeme
+WATCHPARTY_APP_NAME=YourAppName
 JITSI_IMAGE_VERSION=stable-10978
 ```
 
-Create the two local Basic Auth users before starting the stack:
+The room password is applied automatically to every room as soon as it's created,
+by `prosody-plugins-custom/mod_muc_default_password.lua` (hooked into
+`muc-room-created`). To change it later without stopping the stack, use
+`./scripts/set-room-password.sh --prompt`.
 
-```bash
-./scripts/set-cinema-auth.sh eu ela
-```
-
-The script prints the generated passwords once and writes the nginx htpasswd file
-under `${CONFIG}/web/nginx/cinema.htpasswd`.
+`interface_config.js` ships with `APP_NAME`/`PROVIDER_NAME` set to the
+placeholder `{NAME HERE}` - no brand name is committed. Setting
+`WATCHPARTY_APP_NAME` fills it in at boot (see
+`web/rootfs/etc/cont-init.d/05-watchparty-config`).
 
 Then open:
 

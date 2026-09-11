@@ -6,8 +6,9 @@ import { IStore } from '../../app/types';
 import { setPassword } from '../../base/conference/actions';
 import { IJitsiConference } from '../../base/conference/reducer';
 import { translate } from '../../base/i18n/functions';
-import Dialog from '../../base/ui/components/web/Dialog';
+import Button from '../../base/ui/components/web/Button';
 import Input from '../../base/ui/components/web/Input';
+import { BUTTON_TYPES } from '../../base/ui/constants.any';
 import { _cancelPasswordRequiredPrompt } from '../actions';
 
 /**
@@ -70,35 +71,38 @@ class PasswordRequiredPrompt extends Component<IProps, IState> {
      * @returns {ReactElement}
      */
     override render() {
-        return (
-            <Dialog
-                disableBackdropClose = { true }
-                onCancel = { this._onCancel }
-                onSubmit = { this._onSubmit }
-                titleKey = 'dialog.passwordRequired'>
-                { this._renderBody() }
-            </Dialog>
-        );
-    }
+        const { password } = this.state;
+        const { t } = this.props;
 
-    /**
-     * Display component in dialog body.
-     *
-     * @returns {ReactElement}
-     * @protected
-     */
-    _renderBody() {
         return (
-            <div>
-                <Input
-                    autoFocus = { true }
-                    className = 'dialog-bottom-margin'
-                    id = 'required-password-input'
-                    label = { this.props.t('dialog.passwordLabel') }
-                    name = 'lockKey'
-                    onChange = { this._onPasswordChanged }
-                    type = 'password'
-                    value = { this.state.password } />
+            <div className = 'cinema-auth-screen'>
+                <div className = 'cinema-auth-panel'>
+                    <h1>{t('cinemaParty.auth.roomPasswordTitle')}</h1>
+                    <p>{t('cinemaParty.auth.roomPasswordDescription')}</p>
+                    <Input
+                        autoFocus = { true }
+                        className = 'dialog-bottom-margin'
+                        id = 'required-password-input'
+                        label = { t('cinemaParty.auth.roomPasswordLabel') }
+                        name = 'lockKey'
+                        onChange = { this._onPasswordChanged }
+                        placeholder = { t('cinemaParty.auth.roomPasswordPlaceholder') }
+                        type = 'password'
+                        value = { password } />
+                    <div className = 'cinema-auth-actions'>
+                        <Button
+                            accessibilityLabel = { t('cinemaParty.auth.unlockRoom') }
+                            disabled = { !password }
+                            labelKey = 'cinemaParty.auth.unlockRoom'
+                            onClick = { this._onSubmit }
+                            type = { BUTTON_TYPES.PRIMARY } />
+                        <Button
+                            accessibilityLabel = { t('dialog.Cancel') }
+                            labelKey = 'dialog.Cancel'
+                            onClick = { this._onCancel }
+                            type = { BUTTON_TYPES.SECONDARY } />
+                    </div>
+                </div>
             </div>
         );
     }
@@ -120,21 +124,18 @@ class PasswordRequiredPrompt extends Component<IProps, IState> {
      * Dispatches action to cancel and dismiss this dialog.
      *
      * @private
-     * @returns {boolean}
+     * @returns {void}
      */
     _onCancel() {
-
         this.props.dispatch(
             _cancelPasswordRequiredPrompt(this.props.conference));
-
-        return true;
     }
 
     /**
      * Dispatches action to submit value from this dialog.
      *
      * @private
-     * @returns {boolean}
+     * @returns {void}
      */
     _onSubmit() {
         const { conference } = this.props;
@@ -151,8 +152,6 @@ class PasswordRequiredPrompt extends Component<IProps, IState> {
         this.setState({
             password: ''
         });
-
-        return true;
     }
 }
 

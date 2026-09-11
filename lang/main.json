@@ -51,42 +51,6 @@
         "errorSpeakerUnavailable": "Can't translate this participant — they're no longer in the meeting.",
         "labelTooltip": "Translation in progress"
     },
-    "cinemaParty": {
-        "auth": {
-            "hostLogin": "Unlock as host",
-            "inviteOnly": "Invite-only room",
-            "loginDescription": "Use the host credentials for this private watch session.",
-            "loginTitle": "Unlock the room",
-            "password": "Session password",
-            "passwordPlaceholder": "Enter the password",
-            "privateSession": "Private Cinema Party",
-            "unlockSession": "Start session",
-            "username": "Host name",
-            "usernamePlaceholder": "Enter the host name",
-            "waitAsGuest": "Wait as guest",
-            "waitingDescription": "This room starts when the host unlocks it. If this is your session, continue as host.",
-            "waitingGuestDescription": "The room is ready, but the host has not started the session yet.",
-            "waitingTitle": "Waiting for the host"
-        },
-        "fullscreen": {
-            "enter": "Enter fullscreen"
-        },
-        "prejoin": {
-            "errorMissingName": "Enter your name to join the session",
-            "joinSession": "Join session",
-            "nameLabel": "Your cinema name (optional)",
-            "title": "Ready for movie night?"
-        },
-        "status": {
-            "chatOpen": "Chat is open beside the screen.",
-            "inviteOnePerson": "Send this room link to exactly one person.",
-            "sharePrompt": "Start screen sharing when you are ready to watch together.",
-            "tooManyPeople": "This session is made for two people.",
-            "twoPersonLimit": "Ask extra guests to leave before starting the movie.",
-            "waitingForGuest": "Waiting for your guest",
-            "waitingForShare": "Waiting for the screen"
-        }
-    },
     "bandwidthSettings": {
         "assumedBandwidthBps": "e.g. 10000000 for 10 Mbps",
         "assumedBandwidthBpsWarning": "Higher values might cause network issues.",
@@ -210,6 +174,46 @@
         "close": "Close",
         "dontShowAgain": "Don't show me this again",
         "installExtensionText": "Install the extension for Google Calendar and Office 365 integration"
+    },
+    "cinemaParty": {
+        "auth": {
+            "hostLogin": "Unlock as host",
+            "inviteOnly": "Invite-only room",
+            "loginDescription": "Use the host credentials for this private watch session.",
+            "loginTitle": "Unlock the room",
+            "password": "Session password",
+            "passwordPlaceholder": "Enter the password",
+            "roomPasswordDescription": "This room is locked. Enter the shared passphrase to join.",
+            "roomPasswordLabel": "Passphrase",
+            "roomPasswordPlaceholder": "Enter the passphrase",
+            "roomPasswordTitle": "Enter the passphrase",
+            "unlockRoom": "Enter",
+            "unlockSession": "Start session",
+            "username": "Host name",
+            "usernamePlaceholder": "Enter the host name",
+            "waitAsGuest": "Wait as guest",
+            "waitingDescription": "This room starts when the host unlocks it. If this is your session, continue as host.",
+            "waitingGuestDescription": "The room is ready, but the host has not started the session yet.",
+            "waitingTitle": "Waiting for the host"
+        },
+        "fullscreen": {
+            "enter": "Enter fullscreen"
+        },
+        "prejoin": {
+            "errorMissingName": "Enter your name to join the session",
+            "joinSession": "Join session",
+            "nameLabel": "Your name (optional)",
+            "title": "Ready to watch?"
+        },
+        "status": {
+            "chatOpen": "Chat is open beside the screen.",
+            "inviteOnePerson": "Send this room link to exactly one person.",
+            "sharePrompt": "Start screen sharing when you are ready to watch together.",
+            "tooManyPeople": "This session is made for two people.",
+            "twoPersonLimit": "Ask extra guests to leave before starting the movie.",
+            "waitingForGuest": "Waiting for your guest",
+            "waitingForShare": "Waiting for the screen"
+        }
     },
     "closedCaptionsTab": {
         "emptyState": "The closed captions content will be available once a moderator starts it",

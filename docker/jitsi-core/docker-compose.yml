@@ -28,8 +28,6 @@ services:
             - BWE_ESTIMATOR_ENGINE
             - BOSH_RELATIVE
             - CHROME_EXTENSION_BANNER_JSON
-            - CINEMA_BASIC_AUTH
-            - CINEMA_BASIC_AUTH_FILE
             - CODEC_ORDER_JVB
             - CODEC_ORDER_JVB_MOBILE
             - CODEC_ORDER_P2P
@@ -190,6 +188,7 @@ services:
             - VIDEOQUALITY_BITRATE_AV1_ULTRA
             - VIDEOQUALITY_BITRATE_AV1_SS_HIGH
             - VIDEOQUALITY_PREFERRED_CODEC
+            - WATCHPARTY_APP_NAME
             - XMPP_AUTH_DOMAIN
             - XMPP_BOSH_URL_BASE
             - XMPP_DOMAIN
@@ -241,6 +240,7 @@ services:
             - ENABLE_VISITORS
             - ENABLE_XMPP_WEBSOCKET
             - ENABLE_JAAS_COMPONENTS
+            - WATCHPARTY_ROOM_PASSWORD
             - GC_TYPE
             - GC_INC_TH
             - GC_INC_SPEED
