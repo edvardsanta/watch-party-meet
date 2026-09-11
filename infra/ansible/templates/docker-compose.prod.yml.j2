@@ -1,0 +1,29 @@
+services:
+{% if enable_caddy_tls | default(false) | bool %}
+    caddy:
+        image: caddy:2-alpine
+        restart: {{ restart_policy | default('unless-stopped') }}
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./Caddyfile:/etc/caddy/Caddyfile:ro
+            - {{ deploy_dir }}/caddy/data:/data
+            - {{ deploy_dir }}/caddy/config:/config
+        networks:
+            meet.jitsi:
+{% endif %}
+
+    web:
+        image: {{ web_image }}
+        pull_policy: {{ web_image_pull_policy | default('missing') }}
+        read_only: false
+
+    prosody:
+        read_only: false
+
+    jicofo:
+        read_only: false
+
+    jvb:
+        read_only: false
