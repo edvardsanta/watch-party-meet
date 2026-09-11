@@ -16,3 +16,4 @@ COPY docker/jitsi-core/web/rootfs/defaults/default /defaults/default
 COPY docker/jitsi-core/web/rootfs/defaults/meet.conf /defaults/meet.conf
 COPY docker/jitsi-core/web/rootfs/defaults/cinema-config.js /defaults/cinema-config.js
 COPY interface_config.js /defaults/interface_config.js
+COPY docker/jitsi-core/web/rootfs/etc/cont-init.d/05-watchparty-config /etc/cont-init.d/05-watchparty-config
