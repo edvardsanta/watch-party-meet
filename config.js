@@ -788,7 +788,7 @@ var config = {
     disable1On1Mode: null,
 
     filmstrip: {
-        // Cinema Party keeps the shared screen as the primary surface.
+        // Watchparty keeps the shared screen as the primary surface.
         disabled: true,
         disableResizable: true,
         disableStageFilmstrip: true,
@@ -963,7 +963,7 @@ var config = {
     //     // backgroundColor: '#ffffff',
     // },
 
-    toolbarButtons: [ 'microphone', 'desktop', 'shareaudio', 'chat', 'settings', 'hangup' ],
+    toolbarButtons: [ 'microphone', 'desktop', 'shareaudio', 'chat', 'participants-pane', 'settings', 'hangup' ],
 
     // Overrides the buttons displayed in the main toolbar. Depending on the screen size the number of displayed
     // buttons varies from 2 buttons to 8 buttons. Every array in the mainToolbarButtons array will replace the

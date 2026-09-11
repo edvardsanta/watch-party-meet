@@ -2,6 +2,10 @@ config.disablePolls = true;
 config.disableReactions = true;
 config.disableSelfView = true;
 config.disableSelfViewSettings = true;
+config.disableDeepLinking = true;
+config.deeplinking = {
+    disabled: true
+};
 
 config.startAudioOnly = false;
 config.startWithAudioMuted = false;
@@ -28,4 +32,4 @@ config.tileView = {
     disabled: true
 };
 
-config.toolbarButtons = [ 'microphone', 'desktop', 'shareaudio', 'chat', 'settings', 'hangup' ];
+config.toolbarButtons = [ 'microphone', 'desktop', 'shareaudio', 'chat', 'participants-pane', 'settings', 'hangup' ];

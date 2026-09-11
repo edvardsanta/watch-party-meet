@@ -1,6 +1,6 @@
 services:
     web:
-        image: ${WEB_IMAGE:-cinema-party/jitsi-web:latest}
+        image: ${WEB_IMAGE:-watchparty/jitsi-web:latest}
         read_only: false
 
     prosody:

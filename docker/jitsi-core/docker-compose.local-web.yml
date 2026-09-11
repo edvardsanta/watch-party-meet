@@ -1,6 +1,6 @@
 services:
     web:
-        image: cinema-party/jitsi-web:local
+        image: watchparty/jitsi-web:local
         read_only: false
         build:
             context: ../..
