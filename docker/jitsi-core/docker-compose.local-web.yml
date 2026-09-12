@@ -1,0 +1,19 @@
+services:
+    web:
+        image: watchparty/jitsi-web:local
+        read_only: false
+        build:
+            context: ../..
+            dockerfile: docker/jitsi-core/web/Dockerfile.local
+            args:
+                JITSI_IMAGE_REPO: ${JITSI_IMAGE_REPO:-docker.io/jitsi}
+                JITSI_IMAGE_VERSION: ${JITSI_IMAGE_VERSION:-stable-10978}
+
+    prosody:
+        read_only: false
+
+    jicofo:
+        read_only: false
+
+    jvb:
+        read_only: false

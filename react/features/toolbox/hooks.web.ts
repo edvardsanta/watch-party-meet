@@ -103,6 +103,10 @@ const desktop = {
     group: 2
 };
 
+const isScreenShareAvailable = () =>
+    JitsiMeetJS.isDesktopSharingEnabled()
+        || Boolean(navigator.mediaDevices?.getDisplayMedia);
+
 // In Narrow layout and mobile web we are using drawer for popups and that is why it is better to include
 // all forms of reactions in the overflow menu. Otherwise the toolbox will be hidden and the reactions popup
 // misaligned.
@@ -191,7 +195,7 @@ function useToggleCameraButton() {
  *  @returns {Object | undefined}
  */
 function getDesktopSharingButton() {
-    if (JitsiMeetJS.isDesktopSharingEnabled()) {
+    if (isScreenShareAvailable()) {
         return desktop;
     }
 }
@@ -385,7 +389,7 @@ export const useKeyboardShortcuts = (toolbarButtons: Array<string>) => {
     const chatOpen = useSelector((state: IReduxState) => state['features/chat'].isOpen);
     const _isChatDisabled = useSelector(isChatDisabled);
     const desktopSharingButtonDisabled = useSelector(isDesktopShareButtonDisabled);
-    const desktopSharingEnabled = JitsiMeetJS.isDesktopSharingEnabled();
+    const desktopSharingEnabled = isScreenShareAvailable();
     const fullScreen = useSelector((state: IReduxState) => state['features/toolbox'].fullScreen);
     const gifsEnabled = useSelector(isGifEnabled);
     const participantsPaneOpen = useSelector(getParticipantsPaneOpen);

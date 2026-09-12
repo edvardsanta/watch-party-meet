@@ -1,0 +1,49 @@
+deploy_dir: /opt/watchparty
+jitsi_config_dir: /opt/watchparty/config
+timezone: UTC
+
+# Public HTTPS URL used by browsers.
+public_hostname: meet.example.com
+public_url: "https://{{ public_hostname }}"
+
+# Use the Droplet public or Reserved IP. For one public Droplet this is normally the same as ansible_host.
+jvb_advertise_ips: "{{ ansible_host }}"
+
+# Production image built from docker/jitsi-core/web/Dockerfile.local.
+web_image: ghcr.io/YOUR_ORG/watchparty-jitsi-web:REPLACE_WITH_SHA
+web_image_pull_policy: always
+pull_images: true
+jitsi_image_repo: docker.io/jitsi
+jitsi_image_version: stable-10978
+
+enable_letsencrypt: true
+letsencrypt_domain: "{{ public_hostname }}"
+letsencrypt_email: ops@example.com
+letsencrypt_use_staging: false
+
+# Prefer Caddy as the public TLS endpoint when the native Jitsi/acme.sh flow is unstable.
+enable_caddy_tls: false
+
+# Keep P2P off until the mixed NAT scenarios are tested properly.
+enable_p2p: false
+
+# Optional Docker registry login. Leave empty for public images.
+registry_url: ghcr.io
+registry_username: ""
+registry_password: ""
+
+# Room password applied automatically to every room as soon as it's created
+# (see docker/jitsi-core/prosody/prosody-plugins-custom/mod_muc_default_password.lua).
+watchparty_room_password: "REPLACE_WITH_STRONG_PASSWORD"
+
+# On-screen app name/provider (interfaceConfig.APP_NAME / PROVIDER_NAME).
+# Not committed anywhere - pick whatever brand name you want.
+watchparty_app_name: "REPLACE_WITH_APP_NAME"
+
+# Required Jitsi service passwords. Use strong unique values.
+jicofo_auth_password: "REPLACE_WITH_STRONG_PASSWORD"
+jvb_auth_password: "REPLACE_WITH_STRONG_PASSWORD"
+jigasi_xmpp_password: "REPLACE_WITH_STRONG_PASSWORD"
+jigasi_transcriber_password: "REPLACE_WITH_STRONG_PASSWORD"
+jibri_recorder_password: "REPLACE_WITH_STRONG_PASSWORD"
+jibri_xmpp_password: "REPLACE_WITH_STRONG_PASSWORD"

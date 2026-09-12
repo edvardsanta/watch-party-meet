@@ -1,0 +1,22 @@
+project_name = "name"
+digitalocean_project_id = ""
+region       = "nyc1"
+droplet_size = "s-2vcpu-2gb"
+enable_backups = false
+
+# Use DigitalOcean SSH key IDs or fingerprints already registered in the account.
+ssh_key_ids = [
+  "REPLACE_WITH_DO_SSH_KEY_ID_OR_FINGERPRINT"
+]
+
+# Restrict this to your public IP when possible, for example ["203.0.113.10/32"].
+allowed_ssh_cidrs = [
+  "0.0.0.0/0"
+]
+
+enable_reserved_ip = true
+existing_reserved_ip = ""
+
+# Optional. If DigitalOcean manages your DNS zone, Terraform creates meet.example.com.
+domain_name = ""
+record_name = "meet"

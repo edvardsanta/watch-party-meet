@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 
 import { IReduxState, IStore } from '../../../app/types';
 import { translate } from '../../../base/i18n/functions';
-import Dialog from '../../../base/ui/components/web/Dialog';
+import Button from '../../../base/ui/components/web/Button';
+import { BUTTON_TYPES } from '../../../base/ui/constants.any';
 import { cancelWaitForOwner, login } from '../../actions.web';
 
 /**
@@ -80,20 +81,34 @@ class WaitForOwnerDialog extends PureComponent<IProps> {
         } = this.props;
 
         return (
-            <Dialog
-                cancel = {{ translationKey:
-                        this.props._alternativeCancelText ? 'dialog.WaitingForHostButton' : 'dialog.Cancel' }}
-                disableBackdropClose = { true }
-                hideCloseButton = { true }
-                ok = { this.props._hideLoginButton ? { hidden: true,
-                    disabled: true } : { translationKey: 'dialog.IamHost' } }
-                onCancel = { this._onCancelWaitForOwner }
-                onSubmit = { this._onIAmHost }
-                titleKey = { t('dialog.WaitingForHostTitle') }>
-                <span>
-                    { this.props._hideLoginButton ? t('dialog.WaitForHostNoAuthMsg') : t('lobby.waitForModerator') }
-                </span>
-            </Dialog>
+            <div className = 'cinema-auth-screen'>
+                <div className = 'cinema-auth-panel'>
+                    <h1>{t('cinemaParty.auth.waitingTitle')}</h1>
+                    <p>
+                        {this.props._hideLoginButton
+                            ? t('cinemaParty.auth.waitingGuestDescription')
+                            : t('cinemaParty.auth.waitingDescription')}
+                    </p>
+                    <div className = 'cinema-auth-actions'>
+                        {!this.props._hideLoginButton && (
+                            <Button
+                                accessibilityLabel = { t('cinemaParty.auth.hostLogin') }
+                                labelKey = 'cinemaParty.auth.hostLogin'
+                                onClick = { this._onIAmHost }
+                                type = { BUTTON_TYPES.PRIMARY } />
+                        )}
+                        <Button
+                            accessibilityLabel = { this.props._alternativeCancelText
+                                ? t('cinemaParty.auth.waitAsGuest')
+                                : t('dialog.Cancel') }
+                            labelKey = { this.props._alternativeCancelText
+                                ? 'cinemaParty.auth.waitAsGuest'
+                                : 'dialog.Cancel' }
+                            onClick = { this._onCancelWaitForOwner }
+                            type = { BUTTON_TYPES.SECONDARY } />
+                    </div>
+                </div>
+            </div>
         );
     }
 }

@@ -1,0 +1,18 @@
+#!/usr/bin/with-contenv bash
+#
+# The upstream 10-config script only reads /config/custom-config.js and
+# /config/custom-interface_config.js (files meant to be hand-authored in the
+# persistent volume) - it has no idea /defaults/cinema-config.js exists.
+# Regenerate both from our own defaults/env on every boot so the overrides
+# always reach the rendered config.js/interface_config.js, both locally and
+# in production, without depending on manual setup.
+if [[ -f "/defaults/cinema-config.js" ]]; then
+    cp /defaults/cinema-config.js /config/custom-config.js
+fi
+
+if [[ -n "$WATCHPARTY_APP_NAME" ]]; then
+    cat > /config/custom-interface_config.js <<EOF
+interfaceConfig.APP_NAME = '${WATCHPARTY_APP_NAME}';
+interfaceConfig.PROVIDER_NAME = '${WATCHPARTY_APP_NAME}';
+EOF
+fi

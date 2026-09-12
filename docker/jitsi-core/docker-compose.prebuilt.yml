@@ -1,0 +1,13 @@
+services:
+    web:
+        image: ${WEB_IMAGE:-watchparty/jitsi-web:latest}
+        read_only: false
+
+    prosody:
+        read_only: false
+
+    jicofo:
+        read_only: false
+
+    jvb:
+        read_only: false

@@ -11,7 +11,6 @@ import Watermarks from '../../base/react/components/web/Watermarks';
 import { getHideSelfView } from '../../base/settings/functions.any';
 import { getVideoTrackByParticipant } from '../../base/tracks/functions.web';
 import { setColorAlpha } from '../../base/util/helpers';
-import { isSpotTV } from '../../base/util/spot';
 import StageParticipantNameLabel from '../../display-name/components/web/StageParticipantNameLabel';
 import { FILMSTRIP_BREAKPOINT } from '../../filmstrip/constants';
 import { getVerticalViewMaxWidth, isFilmstripResizable } from '../../filmstrip/functions.web';
@@ -382,8 +381,7 @@ function _mapStateToProps(state: IReduxState) {
         _backgroundAlpha: state['features/base/config'].backgroundAlpha,
         _customBackgroundColor: backgroundColor,
         _customBackgroundImageUrl: backgroundImageUrl,
-        _displayScreenSharingPlaceholder:
-            Boolean(isLocalScreenshareOnLargeVideo && !seeWhatIsBeingShared && !isSpotTV(state)),
+        _displayScreenSharingPlaceholder: false,
         _hideSelfView: getHideSelfView(state),
         _isChatOpen: isChatOpen,
         _isDisplayNameVisible: isDisplayNameVisible(state),

@@ -84,9 +84,14 @@ export function shouldRemoteVideosBeVisible(state: IReduxState) {
     // as it is assumed all participants, including fake, will be displayed
     // in the filmstrip.
     const participantCount = getParticipantCountWithFake(state);
+    const realParticipantCount = getParticipantCount(state);
     let pinnedParticipant;
     const { disable1On1Mode, filmstrip: { alwaysShowResizeBar } = {} } = state['features/base/config'];
     const { contextMenuOpened } = state['features/base/responsive-ui'];
+
+    if (getHideSelfView(state) && realParticipantCount <= 2 && !alwaysShowResizeBar) {
+        return false;
+    }
 
     return Boolean(
         contextMenuOpened

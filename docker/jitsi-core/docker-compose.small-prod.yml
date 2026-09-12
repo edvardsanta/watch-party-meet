@@ -1,0 +1,44 @@
+# Local resource-limit override for the smallest production-leaning test:
+# 1 vCPU, 1 GB RAM.
+#
+# Usage:
+#   docker compose \
+#     -f docker-compose.yml \
+#     -f docker-compose.local-web.yml \
+#     -f docker-compose.small-prod.yml \
+#     up -d --build --force-recreate
+
+x-small-prod-logging: &small-prod-logging
+    driver: json-file
+    options:
+        max-size: "10m"
+        max-file: "3"
+
+services:
+    web:
+        cpus: 0.20
+        mem_limit: 128m
+        memswap_limit: 160m
+        pids_limit: 256
+        logging: *small-prod-logging
+
+    prosody:
+        cpus: 0.15
+        mem_limit: 128m
+        memswap_limit: 160m
+        pids_limit: 256
+        logging: *small-prod-logging
+
+    jicofo:
+        cpus: 0.25
+        mem_limit: 256m
+        memswap_limit: 320m
+        pids_limit: 384
+        logging: *small-prod-logging
+
+    jvb:
+        cpus: 0.40
+        mem_limit: 512m
+        memswap_limit: 640m
+        pids_limit: 512
+        logging: *small-prod-logging

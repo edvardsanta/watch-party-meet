@@ -172,6 +172,46 @@
         "dontShowAgain": "Não me mostre isto outra vez",
         "installExtensionText": "Instalar a extensão para a integração Google Calendar e Office 365"
     },
+    "cinemaParty": {
+        "auth": {
+            "hostLogin": "Desbloquear como anfitrião",
+            "inviteOnly": "Sala apenas para convidados",
+            "loginDescription": "Use as credenciais do anfitrião para esta sessão privada.",
+            "loginTitle": "Desbloquear a sala",
+            "password": "Palavra-passe da sessão",
+            "passwordPlaceholder": "Introduza a palavra-passe",
+            "roomPasswordDescription": "Esta sala está trancada. Introduza a palavra-passe partilhada para entrar.",
+            "roomPasswordLabel": "Palavra-passe",
+            "roomPasswordPlaceholder": "Introduza a palavra-passe",
+            "roomPasswordTitle": "Introduza a palavra-passe",
+            "unlockRoom": "Entrar",
+            "unlockSession": "Iniciar sessão",
+            "username": "Nome do anfitrião",
+            "usernamePlaceholder": "Introduza o nome do anfitrião",
+            "waitAsGuest": "Aguardar como convidado",
+            "waitingDescription": "Esta sala inicia quando o anfitrião a desbloquear. Se esta é a sua sessão, continue como anfitrião.",
+            "waitingGuestDescription": "A sala está pronta, mas o anfitrião ainda não iniciou a sessão.",
+            "waitingTitle": "A aguardar o anfitrião"
+        },
+        "fullscreen": {
+            "enter": "Entrar em ecrã inteiro"
+        },
+        "prejoin": {
+            "errorMissingName": "Introduza o seu nome para entrar na sessão",
+            "joinSession": "Entrar na sessão",
+            "nameLabel": "O seu nome (opcional)",
+            "title": "Pronto para assistir?"
+        },
+        "status": {
+            "chatOpen": "O chat está aberto ao lado do ecrã.",
+            "inviteOnePerson": "Envie o link desta sala a exatamente uma pessoa.",
+            "sharePrompt": "Inicie a partilha de ecrã quando estiver pronto para assistir.",
+            "tooManyPeople": "Esta sessão foi feita para duas pessoas.",
+            "twoPersonLimit": "Peça aos convidados extra para sair antes de iniciar.",
+            "waitingForGuest": "A aguardar o seu convidado",
+            "waitingForShare": "A aguardar o ecrã"
+        }
+    },
     "closedCaptionsTab": {
         "emptyState": "O conteúdo das legendas ocultas estará disponível assim que um moderador iniciar a sessão.",
         "startClosedCaptionsButton": "Iniciar legendas ocultas"

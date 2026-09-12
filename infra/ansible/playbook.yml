@@ -1,0 +1,150 @@
+- name: Deploy Watchparty/Jitsi production stack
+  hosts: production
+  become: true
+  gather_facts: true
+
+  pre_tasks:
+    - name: Validate required production variables
+      ansible.builtin.assert:
+        that:
+          - public_hostname is defined
+          - public_url is defined
+          - web_image is defined
+          - jicofo_auth_password is defined
+          - jvb_auth_password is defined
+          - jigasi_xmpp_password is defined
+          - jigasi_transcriber_password is defined
+          - jibri_recorder_password is defined
+          - jibri_xmpp_password is defined
+          - watchparty_room_password is defined
+          - watchparty_app_name is defined
+          - "'REPLACE_WITH' not in web_image"
+          - "'REPLACE_WITH' not in jicofo_auth_password"
+          - "'REPLACE_WITH' not in jvb_auth_password"
+          - "'REPLACE_WITH' not in watchparty_room_password"
+          - "'REPLACE_WITH' not in watchparty_app_name"
+        fail_msg: "Copy group_vars/production.yml.example to group_vars/production.yml and fill production values first."
+
+  tasks:
+    - name: Install OS packages
+      ansible.builtin.apt:
+        name:
+          - ca-certificates
+          - curl
+          - docker.io
+          - docker-compose-v2
+          - python3
+          - rsync
+        state: present
+        update_cache: true
+
+    - name: Enable Docker service
+      ansible.builtin.service:
+        name: docker
+        enabled: true
+        state: started
+
+    - name: Create deployment directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+      loop:
+        - "{{ deploy_dir }}"
+        - "{{ deploy_dir }}/docker-jitsi-core"
+        - "{{ jitsi_config_dir }}"
+        - "{{ deploy_dir }}/caddy"
+        - "{{ deploy_dir }}/caddy/data"
+        - "{{ deploy_dir }}/caddy/config"
+
+    - name: Sync docker-jitsi core without local env files
+      ansible.posix.synchronize:
+        src: ../../docker/jitsi-core/
+        dest: "{{ deploy_dir }}/docker-jitsi-core/"
+        delete: true
+        rsync_opts:
+          - "--exclude=.env"
+          - "--exclude=.env.*"
+          - "--exclude=docker-compose.local-web.yml"
+
+    - name: Render production environment
+      ansible.builtin.template:
+        src: env.prod.j2
+        dest: "{{ deploy_dir }}/docker-jitsi-core/.env"
+        owner: root
+        group: root
+        mode: "0600"
+
+    - name: Render production compose override
+      ansible.builtin.template:
+        src: docker-compose.prod.yml.j2
+        dest: "{{ deploy_dir }}/docker-jitsi-core/docker-compose.prod.yml"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Render Caddyfile
+      ansible.builtin.template:
+        src: Caddyfile.j2
+        dest: "{{ deploy_dir }}/docker-jitsi-core/Caddyfile"
+        owner: root
+        group: root
+        mode: "0644"
+      when: enable_caddy_tls | default(false) | bool
+
+    - name: Ensure prosody custom plugins directory exists
+      ansible.builtin.file:
+        path: "{{ jitsi_config_dir }}/prosody/prosody-plugins-custom"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Sync custom prosody plugins
+      ansible.posix.synchronize:
+        src: ../../docker/jitsi-core/prosody/prosody-plugins-custom/
+        dest: "{{ jitsi_config_dir }}/prosody/prosody-plugins-custom/"
+        delete: true
+
+    - name: Docker registry login
+      ansible.builtin.command:
+        cmd: "docker login {{ registry_url }} --username {{ registry_username }} --password-stdin"
+        stdin: "{{ registry_password }}"
+      no_log: true
+      when:
+        - registry_username | length > 0
+        - registry_password | length > 0
+      changed_when: false
+
+    - name: Pull production images
+      ansible.builtin.command:
+        cmd: docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
+        chdir: "{{ deploy_dir }}/docker-jitsi-core"
+      changed_when: true
+      when: pull_images | default(true) | bool
+
+    - name: Start production stack
+      ansible.builtin.command:
+        # Plain `up -d`, not --force-recreate: recreating every service on every
+        # deploy (even when only the web image changed) forces prosody/jicofo/jvb
+        # to restart and re-register with each other. There's a ~15-20s window
+        # right after where jicofo has no operational bridge, and any join
+        # attempted in that window fails with "no bridge available" and gets
+        # kicked. Compose already recreates a service on its own when that
+        # service's image or config actually changed.
+        cmd: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+        chdir: "{{ deploy_dir }}/docker-jitsi-core"
+      changed_when: true
+
+    - name: Show running containers
+      ansible.builtin.command:
+        cmd: docker compose -f docker-compose.yml -f docker-compose.prod.yml ps
+        chdir: "{{ deploy_dir }}/docker-jitsi-core"
+      changed_when: false
+      register: compose_ps
+
+    - name: Print compose status
+      ansible.builtin.debug:
+        var: compose_ps.stdout_lines

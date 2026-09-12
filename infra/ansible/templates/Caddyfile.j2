@@ -1,0 +1,5 @@
+{{ public_hostname }} {
+	encode gzip zstd
+
+	reverse_proxy web:8000
+}
