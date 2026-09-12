@@ -199,8 +199,13 @@ The playbook installs Docker, creates `/opt/watchparty`, syncs the core without 
 
 ```bash
 docker compose -f docker-compose.yml -f docker-compose.prod.yml \
-  up -d --force-recreate
+  up -d
 ```
+
+Not `--force-recreate`: that would restart every service (including prosody/jicofo/jvb) on
+every deploy, even when only the web image changed, causing a ~15-20s window where jicofo
+has no operational bridge and any join attempted then fails and gets kicked. Plain `up -d`
+still recreates whichever service's image or config actually changed.
 
 Check the result:
 
