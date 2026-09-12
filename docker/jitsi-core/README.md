@@ -20,8 +20,17 @@ From this directory:
 ```bash
 cp env.example .env
 ./gen-passwords.sh
+mkdir -p "${CONFIG:-$HOME/.jitsi-meet-cfg}/prosody/prosody-plugins-custom"
+cp prosody/prosody-plugins-custom/*.lua "${CONFIG:-$HOME/.jitsi-meet-cfg}/prosody/prosody-plugins-custom/"
 docker compose up -d
 ```
+
+The `prosody` service loads custom plugins (including the room-lock passphrase
+in `mod_muc_default_password.lua`) from `${CONFIG}/prosody/prosody-plugins-custom`,
+which is an external, persistent volume - not something the image copies from
+this repo automatically. Re-run the `cp` above whenever you change a plugin
+file locally. (The `infra/ansible` production playbook does this same sync
+automatically on every deploy.)
 
 For local HTTPS testing, set these values in `.env`:
 
