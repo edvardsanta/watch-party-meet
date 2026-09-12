@@ -43,7 +43,7 @@ const requestVideoFullscreen = () => {
  *
  * @returns {React.ReactElement | null}
  */
-export default function CinemaFullscreenButton() {
+export default function WatchFullscreenButton() {
     const { t } = useTranslation();
 
     const onClick = useCallback(async () => {
@@ -60,8 +60,8 @@ export default function CinemaFullscreenButton() {
 
     return (
         <button
-            aria-label = { t('cinemaParty.fullscreen.enter') }
-            className = 'cinema-fullscreen-button'
+            aria-label = { t('watchParty.fullscreen.enter') }
+            className = 'watch-fullscreen-button'
             onClick = { onClick }
             type = 'button'>
             <Icon

@@ -207,7 +207,7 @@ class LoginDialog extends Component<IProps, IState> {
 
         if (messageKey) {
             return (
-                <span className = 'cinema-auth-message'>
+                <span className = 'watch-auth-message'>
                     { translateToHTML(t, messageKey, messageOptions) }
                 </span>
             );
@@ -230,35 +230,35 @@ class LoginDialog extends Component<IProps, IState> {
         const disabled = connecting || !password || !username;
 
         return (
-            <div className = 'cinema-auth-screen'>
-                <div className = 'cinema-auth-panel'>
-                    <h1>{t('cinemaParty.auth.loginTitle')}</h1>
-                    <p>{t('cinemaParty.auth.loginDescription')}</p>
+            <div className = 'watch-auth-screen'>
+                <div className = 'watch-auth-panel'>
+                    <h1>{t('watchParty.auth.loginTitle')}</h1>
+                    <p>{t('watchParty.auth.loginDescription')}</p>
                     <Input
                         autoFocus = { true }
                         id = 'login-dialog-username'
-                        label = { t('cinemaParty.auth.username') }
+                        label = { t('watchParty.auth.username') }
                         name = 'username'
                         onChange = { this._onUsernameChange }
-                        placeholder = { t('cinemaParty.auth.usernamePlaceholder') }
+                        placeholder = { t('watchParty.auth.usernamePlaceholder') }
                         type = 'text'
                         value = { username } />
                     <br />
                     <Input
                         className = 'dialog-bottom-margin'
                         id = 'login-dialog-password'
-                        label = { t('cinemaParty.auth.password') }
+                        label = { t('watchParty.auth.password') }
                         name = 'password'
                         onChange = { this._onPasswordChange }
-                        placeholder = { t('cinemaParty.auth.passwordPlaceholder') }
+                        placeholder = { t('watchParty.auth.passwordPlaceholder') }
                         type = 'password'
                         value = { password } />
                     { this.renderMessage() }
-                    <div className = 'cinema-auth-actions'>
+                    <div className = 'watch-auth-actions'>
                         <Button
-                            accessibilityLabel = { t('cinemaParty.auth.unlockSession') }
+                            accessibilityLabel = { t('watchParty.auth.unlockSession') }
                             disabled = { disabled }
-                            labelKey = 'cinemaParty.auth.unlockSession'
+                            labelKey = 'watchParty.auth.unlockSession'
                             onClick = { this._onLogin }
                             type = { BUTTON_TYPES.PRIMARY } />
                         <Button

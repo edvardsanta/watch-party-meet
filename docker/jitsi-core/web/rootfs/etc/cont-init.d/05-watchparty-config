@@ -2,12 +2,12 @@
 #
 # The upstream 10-config script only reads /config/custom-config.js and
 # /config/custom-interface_config.js (files meant to be hand-authored in the
-# persistent volume) - it has no idea /defaults/cinema-config.js exists.
+# persistent volume) - it has no idea /defaults/watch-config.js exists.
 # Regenerate both from our own defaults/env on every boot so the overrides
 # always reach the rendered config.js/interface_config.js, both locally and
 # in production, without depending on manual setup.
-if [[ -f "/defaults/cinema-config.js" ]]; then
-    cp /defaults/cinema-config.js /config/custom-config.js
+if [[ -f "/defaults/watch-config.js" ]]; then
+    cp /defaults/watch-config.js /config/custom-config.js
 fi
 
 if [[ -n "$WATCHPARTY_APP_NAME" ]]; then
