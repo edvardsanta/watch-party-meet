@@ -1,5 +1,4 @@
 import { JitsiAudioTranslationErrors, JitsiConferenceEvents } from '../base/lib-jitsi-meet';
-import { getLocalParticipant } from '../base/participants/functions';
 import MiddlewareRegistry from '../base/redux/MiddlewareRegistry';
 import StateListenerRegistry from '../base/redux/StateListenerRegistry';
 import { showErrorNotification, showNotification } from '../notifications/actions';
@@ -13,11 +12,10 @@ import {
 import {
     clearAudioTranslation,
     clearReceivingTranslatedSources,
-    setParticipantAudioTranslationLanguage,
     setTranslationListeners,
     updateTranslatedSourceSending
 } from './actions';
-import { getSourceOwnerEndpointId, isAudioTranslationRoomEnabled } from './functions';
+import { isAudioTranslationRoomEnabled } from './functions';
 import logger from './logger';
 
 /**
@@ -31,6 +29,7 @@ const ERROR_NOTIFICATION_KEYS: { [condition: string]: string; } = {
 };
 
 const DEFAULT_ERROR_KEY = 'audioTranslation.errorGeneric';
+
 
 /**
  * Middleware that drives the bridge-side translation when the local user changes
@@ -86,8 +85,8 @@ MiddlewareRegistry.register(store => next => action => {
 });
 
 /**
- * Surfaces audio-translation request failures reported by the bridge-side component: shows a notification
- * describing the error condition and reverts the optimistic language selection for the affected speakers.
+ * Surfaces audio-translation request failures reported by the bridge-side component: shows a notification and
+ * resets translation state (redux + lib-jitsi-meet) so the UI reflects the failure and re-enabling works.
  */
 StateListenerRegistry.register(
     state => state['features/base/conference'].conference,
@@ -104,17 +103,10 @@ StateListenerRegistry.register(
                     titleKey: ERROR_NOTIFICATION_KEYS[error] ?? DEFAULT_ERROR_KEY
                 }, NOTIFICATION_TIMEOUT_TYPE.MEDIUM));
 
-                if (error === JitsiAudioTranslationErrors.SUBSCRIPTION_LIMIT_REACHED) {
-                    // Too many speakers translated at once — reset everything; the notification guides the
-                    // user to enable translation per participant instead.
-                    dispatch(clearAudioTranslation());
-
-                    return;
-                }
-
-                // Otherwise undo the optimistic selection only for the speakers the failed request touched.
-                endpointIds.forEach(endpointId =>
-                    dispatch(setParticipantAudioTranslationLanguage(endpointId, null)));
+                // The optimistic selection didn't take. Reset everything: clears redux (UI reflects off)
+                // and, via conference.clearTranslation(), resets lib-jitsi-meet's language state so
+                // re-enabling isn't deduped to a no-op.
+                dispatch(clearAudioTranslation());
             });
     });
 
@@ -143,11 +135,6 @@ StateListenerRegistry.register(
                     return;
                 }
 
-                // The bridge broadcasts sending changes to every endpoint, including the translated
-                // participant itself; our own translated source is not audio we receive.
-                if (getSourceOwnerEndpointId(sourceName) === getLocalParticipant(getState())?.id) {
-                    return;
-                }
                 dispatch(updateTranslatedSourceSending(sourceName, sending, timestamp));
             });
 

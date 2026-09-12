@@ -14,7 +14,6 @@ import {
     requestEnableVideoModeration
 } from '../../react/features/av-moderation/actions';
 import { isEnabledFromState, isForceMuted } from '../../react/features/av-moderation/functions';
-import { setAudioOnly } from '../../react/features/base/audio-only/actions';
 import {
     endConference,
     sendTones,
@@ -31,6 +30,7 @@ import { isSupportedBrowser } from '../../react/features/base/environment/enviro
 import { isMobileBrowser } from '../../react/features/base/environment/utils';
 import { parseJWTFromURLParams } from '../../react/features/base/jwt/functions';
 import JitsiMeetJS, { JitsiRecordingConstants } from '../../react/features/base/lib-jitsi-meet';
+import { setLowBandwidthMode } from '../../react/features/base/low-bandwidth-mode/actions';
 import { MEDIA_TYPE, VIDEO_TYPE } from '../../react/features/base/media/constants';
 import { isVideoMutedByUser } from '../../react/features/base/media/functions';
 import {
@@ -426,6 +426,9 @@ function initCommands() {
             sendAnalytics(createApiEvent('largevideo.participant.set'));
             dispatch(selectParticipantInLargeVideo(participant.id));
         },
+        'set-participant-properties': properties => {
+            APP.conference.setLocalParticipantProperties(properties);
+        },
         'set-participant-volume': (participantId, volume) => {
             APP.store.dispatch(setVolume(participantId, volume));
         },
@@ -624,9 +627,9 @@ function initCommands() {
             sendAnalytics(createApiEvent('set.video.quality'));
             APP.store.dispatch(setVideoQuality(frameHeight));
         },
-        'set-audio-only': enable => {
-            sendAnalytics(createApiEvent('set.audio.only'));
-            APP.store.dispatch(setAudioOnly(enable));
+        'set-low-bandwidth-mode': enable => {
+            sendAnalytics(createApiEvent('set.low.bandwidth.mode'));
+            APP.store.dispatch(setLowBandwidthMode(enable));
         },
         'start-share-video': url => {
             sendAnalytics(createApiEvent('share.video.start'));
@@ -963,7 +966,7 @@ function initCommands() {
             APP.store.dispatch(overwriteConfig(whitelistedConfig));
         },
         'toggle-virtual-background': () => {
-            APP.store.dispatch(toggleDialog(SettingsDialog, {
+            APP.store.dispatch(toggleDialog('SettingsDialog', SettingsDialog, {
                 defaultTab: SETTINGS_TABS.VIRTUAL_BACKGROUND }));
         },
         'end-conference': () => {
@@ -2589,9 +2592,9 @@ class API {
      * @param {boolean} enabled - Whether the audio only is enabled or not.
      * @returns {void}
      */
-    notifyAudioOnlyChanged(enabled) {
+    notifyLowBandwidthModeChanged(enabled) {
         this._sendEvent({
-            name: 'audio-only-changed',
+            name: 'low-bandwidth-mode-changed',
             enabled
         });
     }
