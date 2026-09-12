@@ -1,4 +1,4 @@
-.cinema-auth-screen {
+.watch-auth-screen {
     align-items: center;
     background:
         radial-gradient(circle at 50% 0%, rgba(180, 40, 58, .28), transparent 34%),
@@ -16,7 +16,7 @@
     z-index: 10000;
 }
 
-.cinema-auth-panel {
+.watch-auth-panel {
     background: rgba(12, 12, 14, .88);
     border: 1px solid rgba(255, 255, 255, .14);
     border-radius: 8px;
@@ -27,39 +27,39 @@
     width: 100%;
 }
 
-.cinema-auth-panel .input-control,
-.cinema-auth-panel input {
+.watch-auth-panel .input-control,
+.watch-auth-panel input {
     box-sizing: border-box;
     max-width: 100%;
     width: 100%;
 }
 
-.cinema-auth-panel h1 {
+.watch-auth-panel h1 {
     font-size: 28px;
     font-weight: 700;
     line-height: 34px;
     margin: 0 0 10px;
 }
 
-.cinema-auth-panel p {
+.watch-auth-panel p {
     color: rgba(255, 255, 255, .72);
     font-size: 15px;
     line-height: 22px;
     margin: 0 0 24px;
 }
 
-.cinema-auth-actions {
+.watch-auth-actions {
     display: flex;
     gap: 12px;
     margin-top: 24px;
 }
 
-.cinema-auth-actions button {
+.watch-auth-actions button {
     flex: 1;
     min-width: 0;
 }
 
-.cinema-auth-message {
+.watch-auth-message {
     color: rgba(255, 255, 255, .78);
     display: block;
     font-size: 13px;
@@ -82,7 +82,7 @@
     object-fit: contain;
 }
 
-.cinema-fullscreen-button {
+.watch-fullscreen-button {
     align-items: center;
     background: rgba(0, 0, 0, .58);
     border: 1px solid rgba(255, 255, 255, .18);
@@ -99,13 +99,13 @@
     z-index: 1000;
 }
 
-.cinema-fullscreen-button:hover,
-.cinema-fullscreen-button:focus-visible {
+.watch-fullscreen-button:hover,
+.watch-fullscreen-button:focus-visible {
     background: rgba(255, 255, 255, .16);
     outline: none;
 }
 
-.cinema-screen-share-active {
+.watch-screen-share-active {
     height: 100dvh;
     overflow: hidden;
     width: 100dvw;
@@ -165,7 +165,7 @@
 }
 
 @media (orientation: landscape) and (max-height: 480px) {
-    .cinema-fullscreen-button {
+    .watch-fullscreen-button {
         height: 36px;
         right: max(8px, env(safe-area-inset-right));
         top: max(8px, env(safe-area-inset-top));
@@ -190,31 +190,31 @@
 }
 
 @media (max-width: 480px) {
-    .cinema-auth-screen {
+    .watch-auth-screen {
         align-items: flex-start;
         justify-content: flex-start;
         padding: max(18px, env(safe-area-inset-top)) 14px max(18px, env(safe-area-inset-bottom));
     }
 
-    .cinema-auth-panel {
+    .watch-auth-panel {
         border-radius: 0;
         box-shadow: none;
         min-height: calc(100dvh - 36px);
         padding: 22px 18px;
     }
 
-    .cinema-auth-panel h1 {
+    .watch-auth-panel h1 {
         font-size: 24px;
         line-height: 30px;
     }
 
-    .cinema-auth-panel p {
+    .watch-auth-panel p {
         font-size: 14px;
         line-height: 20px;
         margin-bottom: 20px;
     }
 
-    .cinema-auth-actions {
+    .watch-auth-actions {
         flex-direction: column;
         gap: 10px;
         margin-top: 20px;
@@ -239,7 +239,7 @@
         width: 100% !important;
     }
 
-    .cinema-fullscreen-button {
+    .watch-fullscreen-button {
         right: max(12px, env(safe-area-inset-right));
         top: max(12px, env(safe-area-inset-top));
     }

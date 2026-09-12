@@ -2,7 +2,7 @@
 
 This directory vendors the core runtime from `docker-jitsi-meet` inside this repository.
 
-It intentionally keeps only the services needed for the Cinema Party/watch-party stack:
+It intentionally keeps only the services needed for the watch-party stack:
 
 - `web`
 - `prosody`
@@ -54,12 +54,12 @@ placeholder `{NAME HERE}` - no brand name is committed. Setting
 Then open:
 
 ```text
-https://localhost:8443/cinema
+https://localhost:8443/watch
 ```
 
 Use `localhost` exactly. The generated `config.js` derives the BOSH and XMPP
 WebSocket URLs from `PUBLIC_URL`; opening the room as
-`https://127.0.0.1:8443/cinema` while `PUBLIC_URL` is set to
+`https://127.0.0.1:8443/watch` while `PUBLIC_URL` is set to
 `https://localhost:8443` can make the web UI load but fail the conference
 connection with a “You have been disconnected” message.
 
@@ -83,15 +83,15 @@ docker compose -f docker-compose.yml -f docker-compose.local-web.yml up -d --bui
 Open:
 
 ```text
-https://localhost:8443/cinema
+https://localhost:8443/watch
 ```
 
 If the browser shows a disconnected/reconnecting message, first confirm the page
 URL uses the same host as `PUBLIC_URL` in `.env`. For the default local setup,
-that means `https://localhost:8443/cinema`, not `https://127.0.0.1:8443/cinema`.
+that means `https://localhost:8443/watch`, not `https://127.0.0.1:8443/watch`.
 The local stack disables XMPP WebSocket and uses relative BOSH (`/http-bind`) to
 avoid Firefox rejecting the self-signed certificate on `wss://localhost:8443`.
 
-The override builds `cinema-party/jitsi-web:local` from the official Jitsi `web` image and replaces only the static web assets compiled from this repository. Runtime meeting config still comes from Docker env/config files and optional `/config/web/custom-config.js`.
+The override builds `watchparty/jitsi-web:local` from the official Jitsi `web` image and replaces only the static web assets compiled from this repository. Runtime meeting config still comes from Docker env/config files and optional `/config/web/custom-config.js`.
 
 The default image version is pinned to `stable-10978` for `web`, `prosody`, `jicofo` and `jvb`. Change `JITSI_IMAGE_VERSION` deliberately when we decide to upgrade the base stack.

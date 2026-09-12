@@ -48,11 +48,11 @@ import {
     abstractMapStateToProps
 } from '../AbstractConference';
 
-import CinemaFullscreenButton from './CinemaFullscreenButton';
-import CinemaScreenShareLayout from './CinemaScreenShareLayout';
-import CinemaSessionStatus from './CinemaSessionStatus';
 import ConferenceInfo from './ConferenceInfo';
 import { default as Notice } from './Notice';
+import WatchFullscreenButton from './WatchFullscreenButton';
+import WatchScreenShareLayout from './WatchScreenShareLayout';
+import WatchSessionStatus from './WatchSessionStatus';
 
 /**
  * DOM events for when full screen mode has changed. Different browsers need
@@ -259,7 +259,7 @@ class Conference extends AbstractConference<IProps, any> {
 
         const videospaceClassName = _timerExpired ? 'timer-expired' : undefined;
         const conferenceClassName = `${_layoutClassName}${this.props._isLocalScreenSharing
-            ? ' cinema-screen-share-active' : ''}`;
+            ? ' watch-screen-share-active' : ''}`;
 
         if (_reducedUI) {
             return (
@@ -281,9 +281,9 @@ class Conference extends AbstractConference<IProps, any> {
                             id = 'videospace'
                             onTouchStart = { this._onVideospaceTouchStart }>
                             <LargeVideo />
-                            <CinemaScreenShareLayout />
-                            <CinemaFullscreenButton />
-                            <CinemaSessionStatus />
+                            <WatchScreenShareLayout />
+                            <WatchFullscreenButton />
+                            <WatchSessionStatus />
                         </div>
                         <AudioTracksContainer />
                         <span
@@ -317,9 +317,9 @@ class Conference extends AbstractConference<IProps, any> {
                         id = 'videospace'
                         onTouchStart = { this._onVideospaceTouchStart }>
                         <LargeVideo />
-                        <CinemaScreenShareLayout />
-                        <CinemaFullscreenButton />
-                        {_showPrejoin || _showLobby || <CinemaSessionStatus />}
+                        <WatchScreenShareLayout />
+                        <WatchFullscreenButton />
+                        {_showPrejoin || _showLobby || <WatchSessionStatus />}
                         {
                             _showPrejoin || _showLobby || (<>
                                 <StageFilmstrip />

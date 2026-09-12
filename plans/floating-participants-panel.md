@@ -2,7 +2,7 @@
 
 ## Summary
 
-In Cinema mode, the user needs to be able to see who's in the session and quickly tell whether each person is muted or not, without bringing back Jitsi's full corporate experience.
+In watch-party mode, the user needs to be able to see who's in the session and quickly tell whether each person is muted or not, without bringing back Jitsi's full corporate experience.
 
 The planned solution is to reuse the existing participants list, but render it as a compact floating panel. The panel shouldn't take up a fixed column, shouldn't shrink the video area, and shouldn't break fullscreen or screen sharing.
 
@@ -19,7 +19,7 @@ The planned solution is to reuse the existing participants list, but render it a
 - No host moderation in this step.
 - No forcibly unmuting another person.
 - No re-enabling the standard fixed side panel.
-- No re-enabling corporate actions like lobby, breakout rooms, invite, mute-all, or advanced menus in Cinema mode.
+- No re-enabling corporate actions like lobby, breakout rooms, invite, mute-all, or advanced menus in watch-party mode.
 
 ## Expected behavior
 
@@ -42,27 +42,27 @@ For audio:
 
 ## Technical direction
 
-- Re-enable `participants-pane` in `toolbarButtons`, in both `config.js` and `docker/jitsi-core/web/rootfs/defaults/cinema-config.js`.
+- Re-enable `participants-pane` in `toolbarButtons`, in both `config.js` and `docker/jitsi-core/web/rootfs/defaults/watch-config.js`.
 - Add a dedicated config option, for example:
 
 ```js
 config.participantsPane = {
     enabled: true,
-    cinemaFloating: true,
+    watchFloating: true,
     hideMoreActionsButton: true,
     hideMuteAllButton: true,
     hideModeratorSettingsTab: true
 };
 ```
 
-- Change the participants pane's width calculation to return `0` when `cinemaFloating` is on, so the layout doesn't subtract width from the video.
-- In the web participants-pane component, apply a floating style when `cinemaFloating` is on:
+- Change the participants pane's width calculation to return `0` when `watchFloating` is on, so the layout doesn't subtract width from the video.
+- In the web participants-pane component, apply a floating style when `watchFloating` is on:
   - `position: fixed`;
   - a compact max width;
   - a max height smaller than the viewport;
   - a subtle border, shadow, and readable background;
   - a z-index above the video, without permanently covering the toolbar/fullscreen controls.
-- In `cinemaFloating` mode, hide:
+- In `watchFloating` mode, hide:
   - search;
   - the invite button;
   - the moderation footer;

@@ -81,28 +81,28 @@ class WaitForOwnerDialog extends PureComponent<IProps> {
         } = this.props;
 
         return (
-            <div className = 'cinema-auth-screen'>
-                <div className = 'cinema-auth-panel'>
-                    <h1>{t('cinemaParty.auth.waitingTitle')}</h1>
+            <div className = 'watch-auth-screen'>
+                <div className = 'watch-auth-panel'>
+                    <h1>{t('watchParty.auth.waitingTitle')}</h1>
                     <p>
                         {this.props._hideLoginButton
-                            ? t('cinemaParty.auth.waitingGuestDescription')
-                            : t('cinemaParty.auth.waitingDescription')}
+                            ? t('watchParty.auth.waitingGuestDescription')
+                            : t('watchParty.auth.waitingDescription')}
                     </p>
-                    <div className = 'cinema-auth-actions'>
+                    <div className = 'watch-auth-actions'>
                         {!this.props._hideLoginButton && (
                             <Button
-                                accessibilityLabel = { t('cinemaParty.auth.hostLogin') }
-                                labelKey = 'cinemaParty.auth.hostLogin'
+                                accessibilityLabel = { t('watchParty.auth.hostLogin') }
+                                labelKey = 'watchParty.auth.hostLogin'
                                 onClick = { this._onIAmHost }
                                 type = { BUTTON_TYPES.PRIMARY } />
                         )}
                         <Button
                             accessibilityLabel = { this.props._alternativeCancelText
-                                ? t('cinemaParty.auth.waitAsGuest')
+                                ? t('watchParty.auth.waitAsGuest')
                                 : t('dialog.Cancel') }
                             labelKey = { this.props._alternativeCancelText
-                                ? 'cinemaParty.auth.waitAsGuest'
+                                ? 'watchParty.auth.waitAsGuest'
                                 : 'dialog.Cancel' }
                             onClick = { this._onCancelWaitForOwner }
                             type = { BUTTON_TYPES.SECONDARY } />

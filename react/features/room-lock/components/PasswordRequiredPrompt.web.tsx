@@ -75,25 +75,25 @@ class PasswordRequiredPrompt extends Component<IProps, IState> {
         const { t } = this.props;
 
         return (
-            <div className = 'cinema-auth-screen'>
-                <div className = 'cinema-auth-panel'>
-                    <h1>{t('cinemaParty.auth.roomPasswordTitle')}</h1>
-                    <p>{t('cinemaParty.auth.roomPasswordDescription')}</p>
+            <div className = 'watch-auth-screen'>
+                <div className = 'watch-auth-panel'>
+                    <h1>{t('watchParty.auth.roomPasswordTitle')}</h1>
+                    <p>{t('watchParty.auth.roomPasswordDescription')}</p>
                     <Input
                         autoFocus = { true }
                         className = 'dialog-bottom-margin'
                         id = 'required-password-input'
-                        label = { t('cinemaParty.auth.roomPasswordLabel') }
+                        label = { t('watchParty.auth.roomPasswordLabel') }
                         name = 'lockKey'
                         onChange = { this._onPasswordChanged }
-                        placeholder = { t('cinemaParty.auth.roomPasswordPlaceholder') }
+                        placeholder = { t('watchParty.auth.roomPasswordPlaceholder') }
                         type = 'password'
                         value = { password } />
-                    <div className = 'cinema-auth-actions'>
+                    <div className = 'watch-auth-actions'>
                         <Button
-                            accessibilityLabel = { t('cinemaParty.auth.unlockRoom') }
+                            accessibilityLabel = { t('watchParty.auth.unlockRoom') }
                             disabled = { !password }
-                            labelKey = 'cinemaParty.auth.unlockRoom'
+                            labelKey = 'watchParty.auth.unlockRoom'
                             onClick = { this._onSubmit }
                             type = { BUTTON_TYPES.PRIMARY } />
                         <Button
