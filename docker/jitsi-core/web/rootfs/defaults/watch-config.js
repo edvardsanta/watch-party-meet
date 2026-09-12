@@ -12,7 +12,7 @@ config.startWithAudioMuted = false;
 config.startWithVideoMuted = true;
 config.enableWelcomePage = false;
 
-config.hiddenPremeetingButtons = [ 'camera', 'select-background', 'invite', 'settings' ];
+config.hiddenPremeetingButtons = [ 'select-background', 'invite', 'settings' ];
 config.prejoinConfig = {
     enabled: true,
     hideDisplayName: false,
@@ -32,4 +32,4 @@ config.tileView = {
     disabled: true
 };
 
-config.toolbarButtons = [ 'microphone', 'desktop', 'shareaudio', 'chat', 'participants-pane', 'settings', 'hangup' ];
+config.toolbarButtons = [ 'microphone', 'camera', 'desktop', 'shareaudio', 'chat', 'participants-pane', 'settings', 'hangup' ];
