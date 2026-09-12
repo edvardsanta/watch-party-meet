@@ -127,7 +127,14 @@
 
     - name: Start production stack
       ansible.builtin.command:
-        cmd: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --force-recreate
+        # Plain `up -d`, not --force-recreate: recreating every service on every
+        # deploy (even when only the web image changed) forces prosody/jicofo/jvb
+        # to restart and re-register with each other. There's a ~15-20s window
+        # right after where jicofo has no operational bridge, and any join
+        # attempted in that window fails with "no bridge available" and gets
+        # kicked. Compose already recreates a service on its own when that
+        # service's image or config actually changed.
+        cmd: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
         chdir: "{{ deploy_dir }}/docker-jitsi-core"
       changed_when: true
 
