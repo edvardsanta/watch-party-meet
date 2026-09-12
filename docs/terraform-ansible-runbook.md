@@ -255,6 +255,36 @@ dig +short A meet.example.com
 
 If the domain doesn't resolve, the problem is DNS. If HTTPS fails, confirm that `80/tcp` and `443/tcp` are open and that Caddy can complete the HTTP challenge. If the call connects but media doesn't work, check `10000/udp`, `jvb_advertise_ips`, and the JVB logs.
 
+### Stuck/ghost JVB bridge ("no operational bridges")
+
+Symptom: a second participant can't join (kicked back to the error screen, or the whole
+call drops for everyone), and `jicofo` logs show either of these repeating every ~10s
+with no recovery:
+
+```
+JvbDoctor$HealthCheckTask.doHealthCheck: Unexpected error returned by the bridge: ...
+  <error ...><not-acceptable .../><text>You are not currently connected to this chat</text></error>
+BridgeSelector.selectBridge: There are no operational bridges.
+```
+
+jicofo's `BridgeSelector` is holding a bridge registration that no longer corresponds to
+an actual JVB present in the internal `jvbbrewery` MUC room - typically left over after
+`prosody` got restarted (breaking jicofo/jvb's long-lived XMPP connections to it) while
+jicofo/jvb themselves kept running. jicofo doesn't self-heal this; it keeps health-checking
+the dead reference indefinitely.
+
+Fix: recreate jicofo and jvb (not prosody, which is healthy) so they rejoin the brewery
+room from scratch:
+
+```bash
+ssh -i ~/.ssh/digital_ocean root@IP_RESERVED \
+  'cd /opt/watchparty/docker-jitsi-core && \
+   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --force-recreate jicofo jvb'
+```
+
+Confirm recovery by tailing jicofo's logs for a fresh `BridgeSelector.addJvbAddress: Added
+new videobridge` with no further health-check errors after it, before letting anyone back in.
+
 ## 9. Destroy the infrastructure
 
 Before destroying, check the state and note the Reserved IP:
