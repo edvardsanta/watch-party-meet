@@ -12,6 +12,15 @@ COPY static/ /usr/share/jitsi-meet/static/
 COPY sounds/ /usr/share/jitsi-meet/sounds/
 COPY images/ /usr/share/jitsi-meet/images/
 COPY lang/ /usr/share/jitsi-meet/lang/
+
+# The files above are copied from the local build context as-is, permission bits
+# included. A restrictive local umask (e.g. lang/*.json checked out/rewritten at
+# 600 on the host) then ships straight into the image and nginx - running as a
+# different user - can't read them, failing those requests with a silent 403 in
+# the browser. Force everything nginx serves back to world-readable regardless
+# of what the host happened to have.
+RUN chmod -R a+rX /usr/share/jitsi-meet
+
 COPY docker/jitsi-core/web/rootfs/defaults/default /defaults/default
 COPY docker/jitsi-core/web/rootfs/defaults/meet.conf /defaults/meet.conf
 COPY docker/jitsi-core/web/rootfs/defaults/cinema-config.js /defaults/cinema-config.js
