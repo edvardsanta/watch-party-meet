@@ -91,7 +91,7 @@ There used to be an nginx Basic Auth layer here instead; it was removed because 
 
 - Simplified flow for watch party.
 - `disablePolls`, `disableReactions`, `disableSelfView`, and `disableSelfViewSettings` on.
-- `startAudioOnly=false`.
+- `startLowBandwidthMode=false`.
 - `startWithAudioMuted=false`.
 - `startWithVideoMuted=true`.
 - `enableWelcomePage=false`.

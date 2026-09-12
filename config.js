@@ -212,7 +212,7 @@ var config = {
 
     // Start the conference in audio only mode (no video is being received nor
     // sent).
-    startAudioOnly: false,
+    startLowBandwidthMode: false,
 
     // Every participant after the Nth will start audio muted.
     // startAudioMuted: 10,
@@ -698,6 +698,11 @@ var config = {
     // Enables forced reload of the client when the call is migrated as a result of
     // the bridge going down.
     // enableForcedReload: true,
+
+    // Enables in-place ICE restarts of the bridge connection (e.g. after a network change), instead of the
+    // legacy recovery flow which re-creates the whole media session. Requires support in jitsi-videobridge
+    // (default: disabled).
+    // enableIceRestart: false,
 
     // Use TURN/UDP servers for the jitsi-videobridge connection (by default
     // we filter out TURN/UDP because it is usually not needed since the

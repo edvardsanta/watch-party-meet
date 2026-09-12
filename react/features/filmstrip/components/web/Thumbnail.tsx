@@ -4,11 +4,13 @@ import { debounce } from 'lodash-es';
 import React, { Component, KeyboardEvent, RefObject, createRef } from 'react';
 import { WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { keyframes } from 'tss-react';
 import { withStyles } from 'tss-react/mui';
 
 import { createScreenSharingIssueEvent } from '../../../analytics/AnalyticsEvents';
 import { sendAnalytics } from '../../../analytics/functions';
 import { IReduxState, IStore } from '../../../app/types';
+import { isTranslationDeliveryPending } from '../../../audio-translation/functions';
 import Avatar from '../../../base/avatar/components/Avatar';
 import { isMobileBrowser } from '../../../base/environment/utils';
 import { translate } from '../../../base/i18n/functions';
@@ -61,6 +63,7 @@ import {
 import ThumbnailAudioIndicator from './ThumbnailAudioIndicator';
 import ThumbnailBottomIndicators from './ThumbnailBottomIndicators';
 import ThumbnailTopIndicators from './ThumbnailTopIndicators';
+import TranslationPendingChip from './TranslationPendingChip';
 import VirtualScreenshareParticipant from './VirtualScreenshareParticipant';
 
 /**
@@ -121,11 +124,6 @@ export interface IProps extends WithTranslation {
     _isActiveParticipant: boolean;
 
     /**
-     * Indicates whether audio only mode is enabled.
-     */
-    _isAudioOnly: boolean;
-
-    /**
      * Indicates whether the participant associated with the thumbnail is displayed on the large video.
      */
     _isCurrentlyOnLargeVideo: boolean;
@@ -139,6 +137,11 @@ export interface IProps extends WithTranslation {
      * Indicates whether the thumbnail should be hidden or not.
      */
     _isHidden: boolean;
+
+    /**
+     * Indicates whether audio only mode is enabled.
+     */
+    _isLowBandwidthMode: boolean;
 
     /**
      * Whether we are currently running in a mobile browser.
@@ -202,6 +205,12 @@ export interface IProps extends WithTranslation {
      * The type of thumbnail to display.
      */
     _thumbnailType: string;
+
+    /**
+     * Whether translated audio from this participant is still reaching other participants, so anyone about to
+     * speak should wait. Takes precedence over the dominant-speaker ring.
+     */
+    _translationDeliveryPending: boolean;
 
     /**
      * The video object position for the participant.
@@ -323,6 +332,29 @@ const defaultStyles = (theme: Theme) => {
         activeSpeaker: {
             '& .active-speaker-indicator': {
                 boxShadow: `inset 0px 0px 0px 3px ${theme.palette.action01Hover} !important`
+            }
+        },
+
+        translationPending: {
+            '& .translation-pending-border': {
+                animation: `${keyframes`
+                    0% {
+                        opacity: 0.45;
+                    }
+                    50% {
+                        opacity: 1;
+                    }
+                    100% {
+                        opacity: 0.45;
+                    }
+                `} 1.6s ease-in-out infinite`,
+                outline: '3px dashed #F8AE1A',
+                outlineOffset: '-1.5px',
+
+                '@media (prefers-reduced-motion: reduce)': {
+                    animation: 'none',
+                    opacity: 0.85
+                }
             }
         },
 
@@ -485,7 +517,7 @@ class Thumbnail extends Component<IProps, IState> {
      */
     _maybeSendScreenSharingIssueEvents(input: any) {
         const {
-            _isAudioOnly,
+            _isLowBandwidthMode,
             _isScreenSharing,
             _thumbnailType
         } = this.props;
@@ -495,7 +527,7 @@ class Thumbnail extends Component<IProps, IState> {
         if (!(DISPLAY_VIDEO === displayMode)
             && isTileType
             && _isScreenSharing
-            && !_isAudioOnly) {
+            && !_isLowBandwidthMode) {
             sendAnalytics(createScreenSharingIssueEvent({
                 source: 'thumbnail',
                 ...input
@@ -887,7 +919,10 @@ class Thumbnail extends Component<IProps, IState> {
             className += ` ${classes.raisedHand}`;
         }
 
-        if (!_isDominantSpeakerDisabled && _participant?.dominantSpeaker) {
+        if (this.props._translationDeliveryPending) {
+            // Others are still hearing this speaker translated; this ring replaces the dominant-speaker one.
+            className += ` ${classes.translationPending}`;
+        } else if (!_isDominantSpeakerDisabled && _participant?.dominantSpeaker) {
             className += ` ${classes.activeSpeaker} dominant-speaker`;
         }
         if (_thumbnailType !== THUMBNAIL_TYPE.TILE && _participant?.pinned) {
@@ -1086,6 +1121,13 @@ class Thumbnail extends Component<IProps, IState> {
                     className = { clsx(classes.borderIndicator,
                     _gifSrc && classes.borderIndicatorOnTop,
                     'active-speaker-indicator') } />
+                <div
+                    className = { clsx(classes.borderIndicator,
+                    _gifSrc && classes.borderIndicatorOnTop,
+                    'translation-pending-border') } />
+                <TranslationPendingChip
+                    participantId = { id }
+                    thumbnailType = { _thumbnailType } />
                 {_gifSrc && (
                     <div
                         className = { clsx(classes.borderIndicator, classes.borderIndicatorOnTop) }
@@ -1308,7 +1350,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
         _disableTileEnlargement: Boolean(disableTileEnlargement),
         _isActiveParticipant: isActiveParticipant,
         _isHidden: isLocal && iAmRecorder && !iAmSipGateway,
-        _isAudioOnly: Boolean(state['features/base/audio-only'].enabled),
+        _isLowBandwidthMode: Boolean(state['features/base/low-bandwidth-mode'].enabled),
         _isCurrentlyOnLargeVideo: participantCurrentlyOnLargeVideo,
         _isDominantSpeakerDisabled: interfaceConfig.DISABLE_DOMINANT_SPEAKER_INDICATOR,
         _isMobile,
@@ -1322,6 +1364,7 @@ function _mapStateToProps(state: IReduxState, ownProps: any): Object {
         _stageFilmstripLayout: isStageFilmstripAvailable(state),
         _stageParticipantsVisible: _currentLayout === LAYOUTS.STAGE_FILMSTRIP_VIEW,
         _shouldDisplayTintBackground: !disableTintForeground && shouldDisplayTintBackground,
+        _translationDeliveryPending: isTranslationDeliveryPending(state, id),
         _thumbnailType: tileType,
         _videoObjectPosition: getVideoObjectPosition(state, participant?.id),
         _videoTrack,

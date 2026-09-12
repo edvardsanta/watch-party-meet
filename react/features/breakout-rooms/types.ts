@@ -33,10 +33,11 @@ export interface IRoomsInfo {
 }
 
 export interface IRoomInfoParticipant {
+    audioMuted?: boolean;
     avatarUrl: string;
     displayName: string;
     id: string;
-    isJibri?: boolean;
+    isHidden?: boolean;
     isJigasi?: boolean;
     jid: string;
     role: string;
@@ -45,4 +46,5 @@ export interface IRoomInfoParticipant {
         id?: string;
         name?: string;
     };
+    videoMuted?: boolean;
 }

@@ -7,7 +7,7 @@ config.deeplinking = {
     disabled: true
 };
 
-config.startAudioOnly = false;
+config.startLowBandwidthMode = false;
 config.startWithAudioMuted = false;
 config.startWithVideoMuted = true;
 config.enableWelcomePage = false;
