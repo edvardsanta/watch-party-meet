@@ -411,14 +411,14 @@ const Prejoin = ({
             showDeviceStatus = { deviceStatusVisible }
             showRecordingWarning = { showRecordingWarning }
             showUnsafeRoomWarning = { showUnsafeRoomWarning }
-            title = { t('cinemaParty.prejoin.title') }
+            title = { t('watchParty.prejoin.title') }
             videoMuted = { !showCameraPreview }
             videoTrack = { videoTrack }>
             <div
                 className = { classes.inputContainer }
                 data-testid = 'prejoin.screen'>
                 {showDisplayNameField ? (<Input
-                    accessibilityLabel = { t('cinemaParty.prejoin.nameLabel') }
+                    accessibilityLabel = { t('watchParty.prejoin.nameLabel') }
                     autoComplete = { 'name' }
                     autoFocus = { true }
                     className = { classes.input }
@@ -427,7 +427,7 @@ const Prejoin = ({
                     id = 'premeeting-name-input'
                     onChange = { setName }
                     onKeyPress = { showUnsafeRoomWarning && !unsafeRoomConsent ? undefined : onInputKeyPress }
-                    placeholder = { t('cinemaParty.prejoin.nameLabel') }
+                    placeholder = { t('watchParty.prejoin.nameLabel') }
                     readOnly = { readOnlyName }
                     required = { false }
                     value = { name } />
@@ -448,7 +448,7 @@ const Prejoin = ({
                     <p
                         aria-live = 'polite'
                         id = 'prejoin-error-missing-name' >
-                        {t('cinemaParty.prejoin.errorMissingName')}
+                        {t('watchParty.prejoin.errorMissingName')}
                     </p>
                 </div>}
 
@@ -471,7 +471,7 @@ const Prejoin = ({
                         <ActionButton
                             OptionsIcon = { showJoinByPhoneButtons ? IconArrowUp : IconArrowDown }
                             ariaDropDownLabel = { t('prejoin.joinWithoutAudio') }
-                            ariaLabel = { t('cinemaParty.prejoin.joinSession') }
+                            ariaLabel = { t('watchParty.prejoin.joinSession') }
                             ariaPressed = { showJoinByPhoneButtons }
                             disabled = { joiningInProgress
                                 || (showUnsafeRoomWarning && !unsafeRoomConsent)
@@ -483,7 +483,7 @@ const Prejoin = ({
                             tabIndex = { 0 }
                             testId = 'prejoin.joinMeeting'
                             type = 'primary'>
-                            {t('cinemaParty.prejoin.joinSession')}
+                            {t('watchParty.prejoin.joinSession')}
                         </ActionButton>
                     </Popover>
                 </div>

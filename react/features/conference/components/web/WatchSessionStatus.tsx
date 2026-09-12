@@ -75,7 +75,7 @@ const hasActiveScreenShare = (state: IReduxState) =>
  *
  * @returns {React.ReactElement}
  */
-export default function CinemaSessionStatus() {
+export default function WatchSessionStatus() {
     const { classes } = useStyles();
     const { t } = useTranslation();
     const isChatOpen = useSelector((state: IReduxState) => state['features/chat'].isOpen);
@@ -87,12 +87,12 @@ export default function CinemaSessionStatus() {
             <div className = { classes.container }>
                 <div
                     className = { classes.status }
-                    data-testid = 'cinema-party-session-status'>
+                    data-testid = 'watch-party-session-status'>
                     <div className = { classes.title }>
-                        {t('cinemaParty.status.tooManyPeople')}
+                        {t('watchParty.status.tooManyPeople')}
                     </div>
                     <div className = { classes.description }>
-                        {t('cinemaParty.status.twoPersonLimit')}
+                        {t('watchParty.status.twoPersonLimit')}
                     </div>
                 </div>
             </div>
@@ -104,12 +104,12 @@ export default function CinemaSessionStatus() {
             <div className = { classes.container }>
                 <div
                     className = { classes.status }
-                    data-testid = 'cinema-party-session-status'>
+                    data-testid = 'watch-party-session-status'>
                     <div className = { classes.title }>
-                        {t('cinemaParty.status.waitingForGuest')}
+                        {t('watchParty.status.waitingForGuest')}
                     </div>
                     <div className = { classes.description }>
-                        {t('cinemaParty.status.inviteOnePerson')}
+                        {t('watchParty.status.inviteOnePerson')}
                     </div>
                 </div>
             </div>
@@ -121,17 +121,17 @@ export default function CinemaSessionStatus() {
     }
 
     const title = isWatching
-        ? t('cinemaParty.status.chatOpen')
-        : t('cinemaParty.status.waitingForShare');
+        ? t('watchParty.status.chatOpen')
+        : t('watchParty.status.waitingForShare');
     const description = isWatching
         ? undefined
-        : t('cinemaParty.status.sharePrompt');
+        : t('watchParty.status.sharePrompt');
 
     return (
         <div className = { classes.container }>
             <div
                 className = { classes.status }
-                data-testid = 'cinema-party-session-status'>
+                data-testid = 'watch-party-session-status'>
                 <div className = { classes.title }>
                     {title}
                 </div>
