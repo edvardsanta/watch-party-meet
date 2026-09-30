@@ -1491,6 +1491,14 @@
             "title": "Pronto para assistir?"
         },
         "status": {
+            "audioUnavailable": "Nenhum áudio ativo de quem está apresentando",
+            "audioUnavailableHint": "Peça para quem está apresentando conferir o áudio e ativar o compartilhamento de áudio ao compartilhar a tela.",
+            "connectionInterrupted": "Sua conexão foi interrompida",
+            "connectionInterruptedHint": "Confira sua internet. A sessão será retomada quando a conexão voltar.",
+            "presenterInterrupted": "A conexão com a tela compartilhada foi interrompida",
+            "presenterInterruptedHint": "Aguarde um momento enquanto a transmissão se reconecta.",
+            "shareStopped": "O compartilhamento de tela parou",
+            "shareStoppedHint": "Aguarde quem está apresentando compartilhar a tela novamente.",
             "chatOpen": "O chat está aberto ao lado da tela.",
             "inviteOnePerson": "Envie o link desta sala para exatamente uma pessoa.",
             "sharePrompt": "Comece a compartilhar a tela quando estiver pronto para assistir.",

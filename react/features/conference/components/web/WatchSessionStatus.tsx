@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
 import { IReduxState } from '../../../app/types';
-import { VIDEO_TYPE } from '../../../base/media/constants';
+import { JitsiConferenceEvents, JitsiTrackStreamingStatus } from '../../../base/lib-jitsi-meet';
+import { MEDIA_TYPE, VIDEO_TYPE } from '../../../base/media/constants';
+import { isOnline } from '../../../base/net-info/selectors';
 import { getParticipantCount } from '../../../base/participants/functions';
+
+import { getWatchSessionStatus } from './watchSessionStatus';
 
 const useStyles = makeStyles()(theme => {
     return {
@@ -67,11 +71,8 @@ const useStyles = makeStyles()(theme => {
     };
 });
 
-const hasActiveScreenShare = (state: IReduxState) =>
-    state['features/base/tracks'].some(track => track.videoType === VIDEO_TYPE.DESKTOP && !track.muted);
-
 /**
- * Displays the small watch-party state over the shared stage.
+ * Displays watch-party status without covering the shared screen with a dialog.
  *
  * @returns {React.ReactElement}
  */
@@ -79,65 +80,92 @@ export default function WatchSessionStatus() {
     const { classes } = useStyles();
     const { t } = useTranslation();
     const isChatOpen = useSelector((state: IReduxState) => state['features/chat'].isOpen);
-    const isWatching = useSelector(hasActiveScreenShare);
+    const tracks = useSelector((state: IReduxState) => state['features/base/tracks']);
+    const conference = useSelector((state: IReduxState) => state['features/base/conference'].conference);
+    const online = useSelector(isOnline);
     const participantCount = useSelector(getParticipantCount);
+    const [ interrupted, setInterrupted ] = useState(false);
+    const [ previousPresenter, setPreviousPresenter ] = useState<string>();
+    const [ audioWarningFor, setAudioWarningFor ] = useState<string>();
+    const screen = tracks.find(track => track.videoType === VIDEO_TYPE.DESKTOP && !track.muted);
+    const presenterId = screen && !screen.local ? screen.participantId : undefined;
+    const presenterInterrupted = Boolean(presenterId
+        && screen?.streamingStatus === JitsiTrackStreamingStatus.INTERRUPTED);
+    const missingAudio = Boolean(presenterId && !tracks.some(track =>
+        !track.local && track.participantId === presenterId
+            && track.mediaType === MEDIA_TYPE.AUDIO && !track.muted));
 
-    if (participantCount > 2) {
-        return (
-            <div className = { classes.container }>
-                <div
-                    className = { classes.status }
-                    data-testid = 'watch-party-session-status'>
-                    <div className = { classes.title }>
-                        {t('watchParty.status.tooManyPeople')}
-                    </div>
-                    <div className = { classes.description }>
-                        {t('watchParty.status.twoPersonLimit')}
-                    </div>
-                </div>
-            </div>
-        );
-    }
+    useEffect(() => {
+        setInterrupted(conference?.isConnectionInterrupted() ?? false);
+        setPreviousPresenter(undefined);
 
-    if (participantCount < 2) {
-        return (
-            <div className = { classes.container }>
-                <div
-                    className = { classes.status }
-                    data-testid = 'watch-party-session-status'>
-                    <div className = { classes.title }>
-                        {t('watchParty.status.waitingForGuest')}
-                    </div>
-                    <div className = { classes.description }>
-                        {t('watchParty.status.inviteOnePerson')}
-                    </div>
-                </div>
-            </div>
-        );
-    }
+        if (!conference) {
+            return;
+        }
 
-    if (isWatching && !isChatOpen) {
-        return null;
-    }
+        const onInterrupted = () => setInterrupted(true);
+        const onRestored = () => setInterrupted(false);
 
-    const title = isWatching
-        ? t('watchParty.status.chatOpen')
-        : t('watchParty.status.waitingForShare');
-    const description = isWatching
-        ? undefined
-        : t('watchParty.status.sharePrompt');
+        conference.on(JitsiConferenceEvents.CONNECTION_INTERRUPTED, onInterrupted);
+        conference.on(JitsiConferenceEvents.CONNECTION_RESTORED, onRestored);
+        conference.on(JitsiConferenceEvents.CONNECTION_ESTABLISHED, onRestored);
+
+        return () => {
+            conference.off(JitsiConferenceEvents.CONNECTION_INTERRUPTED, onInterrupted);
+            conference.off(JitsiConferenceEvents.CONNECTION_RESTORED, onRestored);
+            conference.off(JitsiConferenceEvents.CONNECTION_ESTABLISHED, onRestored);
+        };
+    }, [ conference ]);
+
+    useEffect(() => {
+        if (presenterId) {
+            setPreviousPresenter(presenterId);
+        } else if (screen?.local) {
+            setPreviousPresenter(undefined);
+        }
+    }, [ conference, presenterId, screen?.local ]);
+
+    useEffect(() => {
+        setAudioWarningFor(undefined);
+
+        // Audio and video tracks can arrive separately. Never infer failure from silence.
+        if (!missingAudio || interrupted || presenterInterrupted || online === false) {
+            return;
+        }
+
+        const timeout = window.setTimeout(() => setAudioWarningFor(presenterId), 5000);
+
+        return () => window.clearTimeout(timeout);
+    }, [ conference, presenterId, missingAudio, interrupted, presenterInterrupted, online ]);
+
+    const { title, description } = getWatchSessionStatus({
+        audioUnavailable: missingAudio && audioWarningFor === presenterId,
+        connectionInterrupted: online === false || interrupted,
+        hasPreviousPresenter: Boolean(previousPresenter),
+        isChatOpen,
+        isSharing: Boolean(screen),
+        participantCount,
+        presenterInterrupted
+    });
 
     return (
         <div className = { classes.container }>
             <div
-                className = { classes.status }
-                data-testid = 'watch-party-session-status'>
-                <div className = { classes.title }>
-                    {title}
-                </div>
-                {description && (
-                    <div className = { classes.description }>
-                        {description}
+                aria-atomic = { true }
+                aria-live = 'polite'
+                role = 'status'>
+                {title && (
+                    <div
+                        className = { classes.status }
+                        data-testid = 'watch-party-session-status'>
+                        <div className = { classes.title }>
+                            {t(`watchParty.status.${title}`)}
+                        </div>
+                        {description && (
+                            <div className = { classes.description }>
+                                {t(`watchParty.status.${description}`)}
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
