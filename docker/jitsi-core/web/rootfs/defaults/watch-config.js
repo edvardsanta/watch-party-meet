@@ -29,7 +29,9 @@ config.filmstrip = {
     alwaysShowResizeBar: false
 };
 config.tileView = {
-    disabled: true
+    disabled: false
 };
 
-config.toolbarButtons = [ 'microphone', 'camera', 'desktop', 'shareaudio', 'chat', 'participants-pane', 'settings', 'hangup' ];
+config.toolbarButtons = [
+    'microphone', 'camera', 'desktop', 'shareaudio', 'chat', 'participants-pane', 'tileview', 'settings', 'hangup'
+];
