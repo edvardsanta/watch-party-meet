@@ -68,10 +68,11 @@ Notes:
 
 ## Loop B: build and run the full local image
 
-The local web image copies the **compiled** `libs/` from the repository, so compile first:
+The local web image copies the **compiled** `libs/` and `css/all.css` from the repository. `make compile` only writes `build/`; `make deploy` copies the result into `libs/`. Run both (or `make all`):
 
 ```bash
 make compile
+make deploy
 
 cd docker/jitsi-core
 docker compose \
@@ -84,7 +85,7 @@ Open `https://localhost:8443/<room>`.
 
 For resource-limited variants see [low-spec-local-test.md](low-spec-local-test.md) and [small-prod-local-test.md](small-prod-local-test.md).
 
-`make compile` runs `clean` first, so it wipes `libs/` and `build/`. Do not run it while a dev server is using them.
+`make compile` wipes `build/` and `make deploy` recreates `libs/`. Do not run them while a dev server is running.
 
 ## Working in a git worktree
 
