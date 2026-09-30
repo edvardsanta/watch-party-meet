@@ -35,7 +35,7 @@ CONFIG=/home/<you>/.jitsi-meet-cfg-dev
 HTTP_PORT=8000
 HTTPS_PORT=8443
 PUBLIC_URL=https://localhost:8443
-JVB_ADVERTISE_IPS=127.0.0.1
+JVB_ADVERTISE_IPS=<your LAN IP, e.g. 192.168.15.9>
 ```
 
 Use an absolute `CONFIG` path (compose does not reliably expand `~`) and create its folders:
@@ -46,7 +46,7 @@ mkdir -p ~/.jitsi-meet-cfg-dev/{web,transcripts,prosody/config,prosody/prosody-p
 
 Use a dedicated `CONFIG` directory per environment. Prosody stores the user passwords there, so reusing a directory from another stack, or re-running `gen-passwords.sh` against an old one, breaks authentication.
 
-`JVB_ADVERTISE_IPS` must be an address your browser can reach for media. `127.0.0.1` works when the browser runs on the same machine as Docker. Use the LAN IP instead if you test from another device. `.env` is local, never commit it.
+`JVB_ADVERTISE_IPS` must be a non-loopback address of the machine running Docker (see `ip -4 addr`). Do **not** use `127.0.0.1`: Chromium-based browsers accept loopback ICE candidates, but Firefox ignores them by default, so its media never connects and it drops out of the room after about a minute. Update it if your LAN IP changes.
 
 ## Loop A: dev server against the local backend
 
@@ -130,6 +130,7 @@ The shared-screen audio is mixed into A's microphone track before it is sent, so
 | --- | --- |
 | Meeting ends after about 5 minutes | Dev server is proxying to `alpha.jitsi.net`. Set `WEBPACK_DEV_SERVER_PROXY_TARGET`. |
 | Jicofo logs `SASLError ... not-authorized` and Prosody logs `User exists` | `CONFIG` holds users from an older stack with different passwords. Point `CONFIG` at a fresh directory (or wipe it), then `docker compose down && up -d`. A few such errors right after `up` are a normal start-up race. |
+| Works in Brave/Chrome but Firefox disconnects after ~1 min (Jicofo: `reason: expired`) | `JVB_ADVERTISE_IPS` is `127.0.0.1`. Use the LAN IP and recreate the bridge: `docker compose ... up -d --force-recreate jvb`, then reload the pages. |
 | Joined, but no audio or video between browsers | `JVB_ADVERTISE_IPS` is wrong, or UDP `10000` is blocked. Check `docker compose logs jvb`. |
 | Certificate warning | Expected with the self-signed certificate. |
 | No screen-share audio option | The browser did not offer audio for that capture source. Share a tab with audio. |
