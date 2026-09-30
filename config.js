@@ -802,7 +802,7 @@ var config = {
     },
 
     tileView: {
-        disabled: true
+        disabled: false
     },
 
     // Default local name to be displayed
@@ -968,7 +968,9 @@ var config = {
     //     // backgroundColor: '#ffffff',
     // },
 
-    toolbarButtons: [ 'microphone', 'desktop', 'shareaudio', 'chat', 'participants-pane', 'settings', 'hangup' ],
+    toolbarButtons: [
+        'microphone', 'desktop', 'shareaudio', 'chat', 'participants-pane', 'tileview', 'settings', 'hangup'
+    ],
 
     // Overrides the buttons displayed in the main toolbar. Depending on the screen size the number of displayed
     // buttons varies from 2 buttons to 8 buttons. Every array in the mainToolbarButtons array will replace the

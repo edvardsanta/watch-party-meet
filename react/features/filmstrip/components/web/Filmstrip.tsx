@@ -14,9 +14,9 @@ import { isMobileBrowser, isTouchDevice, shouldEnableResize } from '../../../bas
 import { translate } from '../../../base/i18n/functions';
 import Icon from '../../../base/icons/components/Icon';
 import { IconArrowDown, IconArrowUp } from '../../../base/icons/svg';
+import { VIDEO_TYPE } from '../../../base/media/constants';
 import { isNarrowScreenWithChatOpen } from '../../../base/responsive-ui/functions';
 import { getHideSelfView } from '../../../base/settings/functions.any';
-import { VIDEO_TYPE } from '../../../base/media/constants';
 import { registerShortcut, unregisterShortcut } from '../../../keyboard-shortcuts/actions';
 import { showToolbox } from '../../../toolbox/actions.web';
 import { isToolboxVisible } from '../../../toolbox/functions.web';
@@ -341,6 +341,11 @@ export interface IProps extends WithTranslation {
     _iAmRecorder: boolean;
 
     /**
+     * Whether or not the local participant is sharing their screen.
+     */
+    _isLocalScreenSharing: boolean;
+
+    /**
      * Whether the available space is when the chat is open. The filmstrip will be hidden if true.
      */
     _isNarrowScreenWithChatOpen: boolean;
@@ -354,11 +359,6 @@ export interface IProps extends WithTranslation {
      * Whether the device has touch capability.
      */
     _isTouchDevice?: boolean;
-
-    /**
-     * Whether or not the local participant is sharing their screen.
-     */
-    _isLocalScreenSharing: boolean;
 
     /**
      * Whether or not the current layout is vertical filmstrip.
@@ -615,11 +615,9 @@ class Filmstrip extends PureComponent <IProps, IState> {
         const { isMouseDown } = this.state;
         const tileViewActive = _currentLayout === LAYOUTS.TILE_VIEW;
 
-        if (_filmstripDisabled) {
-            return null;
-        }
-
-        if (_isLocalScreenSharing) {
+        // The watch-party layout keeps the shared screen as the only surface, except when the
+        // user explicitly switches to tile view to see the participants.
+        if ((_filmstripDisabled || _isLocalScreenSharing) && !tileViewActive) {
             return null;
         }
 
