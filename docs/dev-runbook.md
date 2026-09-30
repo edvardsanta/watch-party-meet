@@ -31,12 +31,20 @@ cp env.example .env
 Then edit `docker/jitsi-core/.env`:
 
 ```env
-CONFIG=~/.jitsi-meet-cfg
+CONFIG=/home/<you>/.jitsi-meet-cfg-dev
 HTTP_PORT=8000
 HTTPS_PORT=8443
 PUBLIC_URL=https://localhost:8443
 JVB_ADVERTISE_IPS=127.0.0.1
 ```
+
+Use an absolute `CONFIG` path (compose does not reliably expand `~`) and create its folders:
+
+```bash
+mkdir -p ~/.jitsi-meet-cfg-dev/{web,transcripts,prosody/config,prosody/prosody-plugins-custom,jicofo,jvb}
+```
+
+Use a dedicated `CONFIG` directory per environment. Prosody stores the user passwords there, so reusing a directory from another stack, or re-running `gen-passwords.sh` against an old one, breaks authentication.
 
 `JVB_ADVERTISE_IPS` must be an address your browser can reach for media. `127.0.0.1` works when the browser runs on the same machine as Docker. Use the LAN IP instead if you test from another device. `.env` is local, never commit it.
 
@@ -121,6 +129,7 @@ The shared-screen audio is mixed into A's microphone track before it is sent, so
 | Symptom | Cause / fix |
 | --- | --- |
 | Meeting ends after about 5 minutes | Dev server is proxying to `alpha.jitsi.net`. Set `WEBPACK_DEV_SERVER_PROXY_TARGET`. |
+| Jicofo logs `SASLError ... not-authorized` and Prosody logs `User exists` | `CONFIG` holds users from an older stack with different passwords. Point `CONFIG` at a fresh directory (or wipe it), then `docker compose down && up -d`. A few such errors right after `up` are a normal start-up race. |
 | Joined, but no audio or video between browsers | `JVB_ADVERTISE_IPS` is wrong, or UDP `10000` is blocked. Check `docker compose logs jvb`. |
 | Certificate warning | Expected with the self-signed certificate. |
 | No screen-share audio option | The browser did not offer audio for that capture source. Share a tab with audio. |
