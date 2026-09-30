@@ -35,10 +35,6 @@ import TogglePinToStageButton from './TogglePinToStageButton';
  */
 interface IProps {
 
-    /**
-     * Whether the local user has a screen-share audio track being mixed into their microphone.
-     */
-    _isSharingAudio: boolean;
 
     /**
      * The id of the local participant.
@@ -132,10 +128,6 @@ const useStyles = makeStyles()(() => {
             minWidth: '200px'
         },
 
-        audioLevelLabel: {
-            padding: '8px 16px 0'
-        },
-
         flipText: {
             marginLeft: '36px'
         }
@@ -150,7 +142,6 @@ const LocalVideoMenuTriggerButton = ({
     _showDemote,
     _showHideSelfViewButton,
     _showLocalVideoFlipButton,
-    _isSharingAudio,
     _showPinToStage,
     buttonVisible,
     dispatch,
@@ -243,14 +234,7 @@ const LocalVideoMenuTriggerButton = ({
                             participantID = { _localParticipantId } />
                     }
                 </ContextMenuItemGroup>
-                {_isSharingAudio && (
-                    <ContextMenuItemGroup>
-                        <div className = { classes.audioLevelLabel }>
-                            {t('screenShareAudioLevel')}
-                        </div>
-                        <ScreenShareAudioLevelSlider />
-                    </ContextMenuItemGroup>
-                )}
+                <ScreenShareAudioLevelSlider />
             </ContextMenu>
         );
 
@@ -312,7 +296,6 @@ function _mapStateToProps(state: IReduxState, ownProps: Partial<IProps>) {
     return {
         _menuPosition,
         _showDemote: !disableSelfDemote && getParticipantCount(state) > 1,
-        _isSharingAudio: Boolean(state['features/screen-share'].desktopAudioTrack),
         _showLocalVideoFlipButton: !disableLocalVideoFlip && videoTrack?.videoType !== 'desktop',
         _showHideSelfViewButton: showHideSelfViewButton,
         _overflowDrawer: overflowDrawer,

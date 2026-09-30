@@ -15,6 +15,7 @@ import ContextMenuItemGroup from '../../../../base/ui/components/web/ContextMenu
 import { toggleNoiseSuppression } from '../../../../noise-suppression/actions';
 import { isNoiseSuppressionEnabled } from '../../../../noise-suppression/functions';
 import { isPrejoinPageVisible } from '../../../../prejoin/functions';
+import ScreenShareAudioLevelSlider from '../../../../screen-share/components/web/ScreenShareAudioLevelSlider';
 import { createLocalAudioTracks } from '../../../functions.web';
 
 import MicrophoneEntry from './MicrophoneEntry';
@@ -335,6 +336,7 @@ const AudioSettingsContent = ({
                     </div>
                 </ContextMenuItemGroup>
             )}
+            <ScreenShareAudioLevelSlider />
         </ContextMenu>
     );
 };
