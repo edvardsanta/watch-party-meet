@@ -17,6 +17,7 @@ import ContextMenuItemGroup from '../../../base/ui/components/web/ContextMenuIte
 import ConnectionIndicatorContent from '../../../connection-indicator/components/web/ConnectionIndicatorContent';
 import { THUMBNAIL_TYPE } from '../../../filmstrip/constants';
 import { isStageFilmstripAvailable } from '../../../filmstrip/functions.web';
+import ScreenShareAudioLevelSlider from '../../../screen-share/components/web/ScreenShareAudioLevelSlider';
 import { getParticipantMenuButtonsWithNotifyClick } from '../../../toolbox/functions.web';
 import { NOTIFY_CLICK_MODE } from '../../../toolbox/types';
 import { renderConnectionStatus } from '../../actions.web';
@@ -33,6 +34,7 @@ import TogglePinToStageButton from './TogglePinToStageButton';
  * {@link LocalVideoMenuTriggerButton}.
  */
 interface IProps {
+
 
     /**
      * The id of the local participant.
@@ -232,6 +234,7 @@ const LocalVideoMenuTriggerButton = ({
                             participantID = { _localParticipantId } />
                     }
                 </ContextMenuItemGroup>
+                <ScreenShareAudioLevelSlider />
             </ContextMenu>
         );
 

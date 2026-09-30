@@ -11,7 +11,12 @@ import Avatar from '../../../base/avatar/components/Avatar';
 import { isIosMobileBrowser, isMobileBrowser } from '../../../base/environment/utils';
 import { MEDIA_TYPE } from '../../../base/media/constants';
 import { PARTICIPANT_ROLE } from '../../../base/participants/constants';
-import { getLocalParticipant, hasRaisedHand, isPrivateChatEnabled } from '../../../base/participants/functions';
+import {
+    getLocalParticipant,
+    getParticipantDisplayName,
+    hasRaisedHand,
+    isPrivateChatEnabled
+} from '../../../base/participants/functions';
 import { IParticipant } from '../../../base/participants/types';
 import { isParticipantAudioMuted } from '../../../base/tracks/functions.any';
 import ContextMenu from '../../../base/ui/components/web/ContextMenu';
@@ -152,6 +157,8 @@ const ParticipantContextMenu = ({
     const { participantsVolume } = useSelector((state: IReduxState) => state['features/filmstrip']);
     const _volume = (participant?.local ?? true ? undefined
         : participant?.id ? participantsVolume[participant?.id] : undefined) ?? 1;
+    const _participantName = useSelector((state: IReduxState) =>
+        participant?.id ? getParticipantDisplayName(state, participant.id) : '');
     const isBreakoutRoom = useSelector(isInBreakoutRoom);
     const isModerationSupported = useSelector((state: IReduxState) => isAvModerationSupported()(state));
     const raisedHands = hasRaisedHand(participant);
@@ -383,7 +390,8 @@ const ParticipantContextMenu = ({
                     <VolumeSlider
                         initialValue = { _volume }
                         key = 'volume-slider'
-                        onChange = { _onVolumeChange } />
+                        onChange = { _onVolumeChange }
+                        participantName = { _participantName } />
                 </ContextMenuItemGroup>
             )}
             {breakoutRoomsButtons.length > 0 && (

@@ -1,5 +1,6 @@
-import JitsiMeetJS from '../../base/lib-jitsi-meet';
 import { MEDIA_TYPE } from '../../base/media/constants';
+
+import { getScreenshareMixGain, subscribeScreenshareMixGain } from './screenshareMixGain';
 
 /**
  * Class Implementing the effect interface expected by a JitsiLocalTrack.
@@ -33,9 +34,19 @@ export class AudioMixerEffect {
     _originalTrack: any;
 
     /**
-     * Lib-jitsi-meet AudioMixer.
+     * The WebAudio context of the mix graph.
      */
-    _audioMixer: any;
+    _audioContext?: any;
+
+    /**
+     * The WebAudio nodes of the mix graph, kept so they can be disconnected when the effect stops.
+     */
+    _nodes: any[] = [];
+
+    /**
+     * Removes the subscription to screen-share gain changes.
+     */
+    _unsubscribeGain?: () => void;
 
     /**
      * Creates AudioMixerEffect.
@@ -73,11 +84,23 @@ export class AudioMixerEffect {
         this._originalStream = audioStream;
         this._originalTrack = audioStream.getTracks()[0];
 
-        this._audioMixer = JitsiMeetJS.createAudioMixer();
-        this._audioMixer.addMediaStream(this._mixAudio.getOriginalStream());
-        this._audioMixer.addMediaStream(this._originalStream);
+        const context = new (globalThis as any).AudioContext();
+        const destination = context.createMediaStreamDestination();
+        const micSource = context.createMediaStreamSource(this._originalStream);
+        const screenSource = context.createMediaStreamSource(this._mixAudio.getOriginalStream());
+        const screenGain = context.createGain();
 
-        this._mixedMediaStream = this._audioMixer.start();
+        screenGain.gain.value = getScreenshareMixGain();
+        this._unsubscribeGain = subscribeScreenshareMixGain(gain => {
+            screenGain.gain.value = gain;
+        });
+        micSource.connect(destination);
+        screenSource.connect(screenGain);
+        screenGain.connect(destination);
+
+        this._audioContext = context;
+        this._nodes = [ micSource, screenSource, screenGain ];
+        this._mixedMediaStream = destination.stream;
         this._mixedMediaTrack = this._mixedMediaStream.getTracks()[0];
 
         return this._mixedMediaStream;
@@ -89,7 +112,12 @@ export class AudioMixerEffect {
      * @returns {void}
      */
     stopEffect() {
-        this._audioMixer.reset();
+        this._unsubscribeGain?.();
+        this._unsubscribeGain = undefined;
+        this._nodes.forEach(node => node.disconnect());
+        this._nodes = [];
+        this._audioContext?.close().catch(() => { /* already closed */ });
+        this._audioContext = undefined;
     }
 
     /**
