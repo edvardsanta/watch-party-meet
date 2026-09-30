@@ -18,14 +18,18 @@ EOF
 
     # title.html is baked into the image at build time, so the og:/itemprop
     # tags still say "Jitsi Meet" unless we rewrite it here at boot.
+    # The name lands in HTML text and double-quoted attributes, so escape it.
+    APP_NAME_HTML="$(printf '%s' "$WATCHPARTY_APP_NAME" \
+        | sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g' -e 's/"/\&quot;/g')"
+
     cat > /usr/share/jitsi-meet/title.html <<EOF
-<title>${WATCHPARTY_APP_NAME}</title>
-<meta property="og:title" content="${WATCHPARTY_APP_NAME}"/>
+<title>${APP_NAME_HTML}</title>
+<meta property="og:title" content="${APP_NAME_HTML}"/>
 <meta property="og:image" content="images/jitsilogo.png?v=1"/>
-<meta property="og:description" content="Join a video conference on ${WATCHPARTY_APP_NAME}"/>
-<meta description="Join a video conference on ${WATCHPARTY_APP_NAME}"/>
-<meta itemprop="name" content="${WATCHPARTY_APP_NAME}"/>
-<meta itemprop="description" content="Join a video conference on ${WATCHPARTY_APP_NAME}"/>
+<meta property="og:description" content="Join a video conference on ${APP_NAME_HTML}"/>
+<meta description="Join a video conference on ${APP_NAME_HTML}"/>
+<meta itemprop="name" content="${APP_NAME_HTML}"/>
+<meta itemprop="description" content="Join a video conference on ${APP_NAME_HTML}"/>
 <meta itemprop="image" content="images/jitsilogo.png?v=1"/>
 <link rel="icon" href="images/favicon.svg?v=1">
 EOF
