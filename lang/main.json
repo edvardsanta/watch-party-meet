@@ -969,6 +969,7 @@
         "whiteboardLimitDescription": "Please save your progress, as the user limit will soon be reached and the whiteboard will close.",
         "whiteboardLimitTitle": "Whiteboard usage"
     },
+    "participantVolume": "Volume of {{name}}",
     "participantsPane": {
         "actions": {
             "admit": "Admit",

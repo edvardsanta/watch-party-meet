@@ -22,6 +22,11 @@ interface IProps {
      * The callback to invoke when the audio slider value changes.
      */
     onChange: Function;
+
+    /**
+     * The display name of the participant whose playback volume is controlled. Used for the accessible label.
+     */
+    participantName?: string;
 }
 
 const useStyles = makeStyles()(theme => {
@@ -67,7 +72,8 @@ const _onClick = (e: React.MouseEvent) => {
 
 const VolumeSlider = ({
     initialValue,
-    onChange
+    onChange,
+    participantName
 }: IProps) => {
     const { classes, cx } = useStyles();
     const { t } = useTranslation();
@@ -81,9 +87,10 @@ const VolumeSlider = ({
         setVolumeLevel(newVolumeLevel);
     }, [ onChange ]);
 
+    const label = participantName ? t('participantVolume', { name: participantName }) : t('volumeSlider');
+
     return (
         <div
-            aria-label = { t('volumeSlider') }
             className = { cx('popupmenu__contents', classes.container) }
             onClick = { _onClick }>
             <span className = { classes.icon }>
@@ -93,9 +100,8 @@ const VolumeSlider = ({
             </span>
             <div className = { classes.sliderContainer }>
                 <input
-                    aria-valuemax = { VOLUME_SLIDER_SCALE }
-                    aria-valuemin = { 0 }
-                    aria-valuenow = { volumeLevel }
+                    aria-label = { label }
+                    aria-valuetext = { `${volumeLevel}%` }
                     className = { cx('popupmenu__volume-slider', classes.slider) }
                     max = { VOLUME_SLIDER_SCALE }
                     min = { 0 }

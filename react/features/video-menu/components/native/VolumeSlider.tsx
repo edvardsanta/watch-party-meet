@@ -7,9 +7,11 @@ import { View, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 
 import { IReduxState } from '../../../app/types';
+import i18next from '../../../base/i18n/i18next';
 import Icon from '../../../base/icons/components/Icon';
 import { IconVolumeUp } from '../../../base/icons/svg';
 import { MEDIA_TYPE } from '../../../base/media/constants';
+import { getParticipantDisplayName } from '../../../base/participants/functions';
 import {
     getTrackByMediaTypeAndParticipant,
     getTrackState
@@ -25,6 +27,11 @@ import styles from './styles';
  * The type of the React {@code Component} props of {@link VolumeSlider}.
  */
 interface IProps {
+
+    /**
+     * The display name of the participant, used for the accessibility label.
+     */
+    _participantName?: string;
 
     /**
      * Whether the participant enters the conference silent.
@@ -100,7 +107,7 @@ class VolumeSlider extends PureComponent<IProps, IState> {
      * @returns {ReactElement}
      */
     override render() {
-        const { _startSilent } = this.props;
+        const { _participantName, _startSilent } = this.props;
         const { volumeLevel } = this.state;
         const onVolumeChange = _startSilent ? undefined : this._onVolumeChange;
 
@@ -110,6 +117,9 @@ class VolumeSlider extends PureComponent<IProps, IState> {
                     size = { 24 }
                     src = { IconVolumeUp } />
                 <Slider
+                    accessibilityLabel = { _participantName
+                        ? i18next.t('participantVolume', { name: _participantName })
+                        : i18next.t('volumeSlider') }
                     maximumTrackTintColor = { BaseTheme.palette.ui10 }
                     maximumValue = { NATIVE_VOLUME_SLIDER_SCALE }
                     minimumTrackTintColor = { BaseTheme.palette.action01 }
@@ -165,6 +175,7 @@ function mapStateToProps(state: IReduxState, ownProps: IProps) {
     const tracks = getTrackState(state);
 
     return {
+        _participantName: participantID ? getParticipantDisplayName(state, participantID) : undefined,
         _startSilent: Boolean(startSilent),
         _track: getTrackByMediaTypeAndParticipant(tracks, MEDIA_TYPE.AUDIO, participantID),
         _volume: participantID && participantsVolume[participantID]
