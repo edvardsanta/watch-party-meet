@@ -1753,6 +1753,14 @@
             "title": "Ready to watch?"
         },
         "status": {
+            "audioUnavailable": "No active audio from the presenter",
+            "audioUnavailableHint": "Ask the presenter to check their audio and enable audio sharing when sharing the screen.",
+            "connectionInterrupted": "Your connection was interrupted",
+            "connectionInterruptedHint": "Check your internet connection. The session will resume when the connection returns.",
+            "presenterInterrupted": "The shared screen lost its connection",
+            "presenterInterruptedHint": "Wait a moment while the transmission reconnects.",
+            "shareStopped": "Screen sharing has stopped",
+            "shareStoppedHint": "Wait for the presenter to share their screen again.",
             "chatOpen": "Chat is open beside the screen.",
             "inviteOnePerson": "Send this room link to exactly one person.",
             "sharePrompt": "Start screen sharing when you are ready to watch together.",
