@@ -9,21 +9,21 @@ import { setScreenshareAudioMixGain } from '../../actions.any';
 
 /**
  * Slider which lets the sharer choose how loud the shared-screen audio is, relative to the microphone, in what the
- * other participants hear. Rendered only while the screen audio is being shared.
+ * other participants hear. Rendered only while a screen-share audio track exists.
  *
  * @returns {ReactElement|null}
  */
 const ScreenShareAudioLevelSlider = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const isSharingAudio = useSelector((state: IReduxState) => state['features/screen-share'].isSharingAudio);
+    const hasScreenAudio = useSelector((state: IReduxState) => Boolean(state['features/screen-share'].desktopAudioTrack));
     const gain = useSelector((state: IReduxState) =>
         state['features/screen-share'].audioMixGain ?? DEFAULT_SCREENSHARE_MIX_GAIN);
     const onChange = useCallback((value: number) => {
         dispatch(setScreenshareAudioMixGain(value));
     }, [ dispatch ]);
 
-    if (!isSharingAudio) {
+    if (!hasScreenAudio) {
         return null;
     }
 
