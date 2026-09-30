@@ -1722,6 +1722,7 @@
         },
         "waitingMessage": "You'll join the meeting as soon as it is live!"
     },
+    "screenShareAudioLevel": "Shared screen audio level",
     "volumeSlider": "Volume slider",
     "watchParty": {
         "auth": {

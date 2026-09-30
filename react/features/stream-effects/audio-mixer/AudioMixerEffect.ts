@@ -1,10 +1,6 @@
 import { MEDIA_TYPE } from '../../base/media/constants';
 
-/**
- * Gain applied to the shared-screen (system) audio before it is summed with the microphone. The system audio is
- * usually much louder than the processed (AGC/NS) microphone signal, so a unity-gain sum buries the voice.
- */
-export const SCREENSHARE_AUDIO_MIX_GAIN = 0.4;
+import { getScreenshareMixGain, subscribeScreenshareMixGain } from './screenshareMixGain';
 
 /**
  * Class Implementing the effect interface expected by a JitsiLocalTrack.
@@ -40,12 +36,17 @@ export class AudioMixerEffect {
     /**
      * The WebAudio context of the mix graph.
      */
-    _audioContext?: AudioContext;
+    _audioContext?: any;
 
     /**
      * The WebAudio nodes of the mix graph, kept so they can be disconnected when the effect stops.
      */
-    _nodes: AudioNode[] = [];
+    _nodes: any[] = [];
+
+    /**
+     * Removes the subscription to screen-share gain changes.
+     */
+    _unsubscribeGain?: () => void;
 
     /**
      * Creates AudioMixerEffect.
@@ -83,13 +84,16 @@ export class AudioMixerEffect {
         this._originalStream = audioStream;
         this._originalTrack = audioStream.getTracks()[0];
 
-        const context = new AudioContext();
+        const context = new (globalThis as any).AudioContext();
         const destination = context.createMediaStreamDestination();
-        const micSource = context.createMediaStreamSource(this._originalStream as MediaStream);
+        const micSource = context.createMediaStreamSource(this._originalStream);
         const screenSource = context.createMediaStreamSource(this._mixAudio.getOriginalStream());
         const screenGain = context.createGain();
 
-        screenGain.gain.value = SCREENSHARE_AUDIO_MIX_GAIN;
+        screenGain.gain.value = getScreenshareMixGain();
+        this._unsubscribeGain = subscribeScreenshareMixGain(gain => {
+            screenGain.gain.value = gain;
+        });
         micSource.connect(destination);
         screenSource.connect(screenGain);
         screenGain.connect(destination);
@@ -108,6 +112,8 @@ export class AudioMixerEffect {
      * @returns {void}
      */
     stopEffect() {
+        this._unsubscribeGain?.();
+        this._unsubscribeGain = undefined;
         this._nodes.forEach(node => node.disconnect());
         this._nodes = [];
         this._audioContext?.close().catch(() => { /* already closed */ });

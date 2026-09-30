@@ -19,6 +19,11 @@ interface IProps {
     initialValue: number;
 
     /**
+     * Overrides the accessible label (and takes precedence over {@code participantName}).
+     */
+    label?: string;
+
+    /**
      * The callback to invoke when the audio slider value changes.
      */
     onChange: Function;
@@ -72,6 +77,7 @@ const _onClick = (e: React.MouseEvent) => {
 
 const VolumeSlider = ({
     initialValue,
+    label: labelOverride,
     onChange,
     participantName
 }: IProps) => {
@@ -87,7 +93,7 @@ const VolumeSlider = ({
         setVolumeLevel(newVolumeLevel);
     }, [ onChange ]);
 
-    const label = participantName ? t('participantVolume', { name: participantName }) : t('volumeSlider');
+    const label = labelOverride ?? (participantName ? t('participantVolume', { name: participantName }) : t('volumeSlider'));
 
     return (
         <div

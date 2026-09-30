@@ -2,8 +2,13 @@ import { IStore } from '../app/types';
 import { CONFERENCE_JOINED } from '../base/conference/actionTypes';
 import { MEDIA_TYPE } from '../base/media/constants';
 import MiddlewareRegistry from '../base/redux/MiddlewareRegistry';
+import { setScreenshareMixGain } from '../stream-effects/audio-mixer/screenshareMixGain';
 
-import { SET_SCREENSHARE_CAPTURE_FRAME_RATE, SET_SCREEN_AUDIO_SHARE_STATE } from './actionTypes';
+import {
+    SET_SCREENSHARE_AUDIO_MIX_GAIN,
+    SET_SCREENSHARE_CAPTURE_FRAME_RATE,
+    SET_SCREEN_AUDIO_SHARE_STATE
+} from './actionTypes';
 import logger from './logger';
 
 /**
@@ -18,6 +23,9 @@ MiddlewareRegistry.register(store => next => action => {
     const state = getState();
 
     switch (action.type) {
+    case SET_SCREENSHARE_AUDIO_MIX_GAIN:
+        setScreenshareMixGain(action.audioMixGain);
+        break;
     case CONFERENCE_JOINED: {
         _setScreenshareCaptureFps(store);
         break;

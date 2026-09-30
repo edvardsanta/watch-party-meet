@@ -17,6 +17,7 @@ import ContextMenuItemGroup from '../../../base/ui/components/web/ContextMenuIte
 import ConnectionIndicatorContent from '../../../connection-indicator/components/web/ConnectionIndicatorContent';
 import { THUMBNAIL_TYPE } from '../../../filmstrip/constants';
 import { isStageFilmstripAvailable } from '../../../filmstrip/functions.web';
+import ScreenShareAudioLevelSlider from '../../../screen-share/components/web/ScreenShareAudioLevelSlider';
 import { getParticipantMenuButtonsWithNotifyClick } from '../../../toolbox/functions.web';
 import { NOTIFY_CLICK_MODE } from '../../../toolbox/types';
 import { renderConnectionStatus } from '../../actions.web';
@@ -33,6 +34,11 @@ import TogglePinToStageButton from './TogglePinToStageButton';
  * {@link LocalVideoMenuTriggerButton}.
  */
 interface IProps {
+
+    /**
+     * Whether the local user is sharing the audio of their screen.
+     */
+    _isSharingAudio: boolean;
 
     /**
      * The id of the local participant.
@@ -126,6 +132,10 @@ const useStyles = makeStyles()(() => {
             minWidth: '200px'
         },
 
+        audioLevelLabel: {
+            padding: '8px 16px 0'
+        },
+
         flipText: {
             marginLeft: '36px'
         }
@@ -140,6 +150,7 @@ const LocalVideoMenuTriggerButton = ({
     _showDemote,
     _showHideSelfViewButton,
     _showLocalVideoFlipButton,
+    _isSharingAudio,
     _showPinToStage,
     buttonVisible,
     dispatch,
@@ -232,6 +243,14 @@ const LocalVideoMenuTriggerButton = ({
                             participantID = { _localParticipantId } />
                     }
                 </ContextMenuItemGroup>
+                {_isSharingAudio && (
+                    <ContextMenuItemGroup>
+                        <div className = { classes.audioLevelLabel }>
+                            {t('screenShareAudioLevel')}
+                        </div>
+                        <ScreenShareAudioLevelSlider />
+                    </ContextMenuItemGroup>
+                )}
             </ContextMenu>
         );
 
@@ -293,6 +312,7 @@ function _mapStateToProps(state: IReduxState, ownProps: Partial<IProps>) {
     return {
         _menuPosition,
         _showDemote: !disableSelfDemote && getParticipantCount(state) > 1,
+        _isSharingAudio: Boolean(state['features/screen-share'].isSharingAudio),
         _showLocalVideoFlipButton: !disableLocalVideoFlip && videoTrack?.videoType !== 'desktop',
         _showHideSelfViewButton: showHideSelfViewButton,
         _overflowDrawer: overflowDrawer,
