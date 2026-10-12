@@ -1,7 +1,7 @@
 services:
 {% if enable_caddy_tls | default(false) | bool %}
     caddy:
-        image: caddy:2-alpine
+        image: {{ runtime_image_lock.images.caddy.reference }}
         restart: {{ restart_policy | default('unless-stopped') }}
         ports:
             - "80:80"
@@ -20,10 +20,13 @@ services:
         read_only: false
 
     prosody:
+        image: {{ runtime_image_lock.images.prosody.reference }}
         read_only: false
 
     jicofo:
+        image: {{ runtime_image_lock.images.jicofo.reference }}
         read_only: false
 
     jvb:
+        image: {{ runtime_image_lock.images.jvb.reference }}
         read_only: false

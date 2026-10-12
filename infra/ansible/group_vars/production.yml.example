@@ -13,8 +13,7 @@ jvb_advertise_ips: "{{ ansible_host }}"
 web_image: ghcr.io/YOUR_ORG/watchparty-jitsi-web:REPLACE_WITH_SHA
 web_image_pull_policy: always
 pull_images: true
-jitsi_image_repo: docker.io/jitsi
-jitsi_image_version: stable-10978
+# Official images are pinned in docker/jitsi-core/images.lock.json.
 
 enable_letsencrypt: true
 letsencrypt_domain: "{{ public_hostname }}"

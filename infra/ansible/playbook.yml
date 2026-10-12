@@ -4,6 +4,17 @@
   gather_facts: true
 
   pre_tasks:
+    - name: Load reviewed runtime image digests
+      ansible.builtin.set_fact:
+        runtime_image_lock: "{{ lookup('file', playbook_dir + '/../../docker/jitsi-core/images.lock.json') | from_json }}"
+
+    - name: Reject legacy image version overrides that disagree with the lock
+      ansible.builtin.assert:
+        that:
+          - jitsi_image_version | default('stable-10978') == 'stable-10978'
+          - jitsi_image_repo | default('docker.io/jitsi') == 'docker.io/jitsi'
+        fail_msg: "Runtime images are pinned in docker/jitsi-core/images.lock.json. Review the lock to change images."
+
     - name: Validate required production variables
       ansible.builtin.assert:
         that:

@@ -61,6 +61,10 @@ for you.
 
 ## Documentation
 
+* [Watch Party source inventory](components/README.md) records fallback components, fixed revisions and licenses.
+* [Runtime image lock and recovery](docs/runtime-image-lock.md) covers pinned official images and local backups.
+* [Infrastructure independence specification](specs/monorepo-independence.md) records remaining dependencies and contingency acceptance criteria.
+
 All the Jitsi Meet documentation is available in [the handbook](https://jitsi.github.io/handbook/).
 
 ## Security

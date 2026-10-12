@@ -15,8 +15,8 @@
 #   SSH_KEY_PATH      Caminho para chave SSH privada
 #   SAVE_IMAGES_ONLY  Se "true", builda sem enviar
 #   SKIP_WEB_BUILD    Se "true", pula make compile deploy
-#   JITSI_IMAGE_REPO  Repo base das imagens Jitsi. Padrão: docker.io/jitsi
-#   JITSI_IMAGE_VERSION Versão base Jitsi. Padrão: stable-10978
+#   SOURCE_DIR        Optional frontend checkout; defaults to this repository.
+#   Official web base is pinned by docker/jitsi-core/images.lock.json.
 #
 # Exemplos:
 #   SAVE_IMAGES_ONLY=true ./scripts/build-local-export-droplet.sh
@@ -25,7 +25,8 @@
 
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SCRIPT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ROOT_DIR="${SOURCE_DIR:-$SCRIPT_ROOT}"
 
 if git -C "$ROOT_DIR" rev-parse --short HEAD >/dev/null 2>&1; then
   DEFAULT_TAG="$(git -C "$ROOT_DIR" rev-parse --short HEAD)"
@@ -37,8 +38,10 @@ TAG="${TAG:-$DEFAULT_TAG}"
 WEB_IMAGE_NAME="${WEB_IMAGE_NAME:-watchparty/jitsi-web}"
 WEB_IMAGE="${WEB_IMAGE_NAME}:${TAG}"
 PLATFORM="${PLATFORM:-linux/amd64}"
-JITSI_IMAGE_REPO="${JITSI_IMAGE_REPO:-docker.io/jitsi}"
-JITSI_IMAGE_VERSION="${JITSI_IMAGE_VERSION:-stable-10978}"
+if [[ -n "${JITSI_IMAGE_REPO:-}" || -n "${JITSI_IMAGE_VERSION:-}" ]]; then
+  echo "Image overrides moved to docker/jitsi-core/images.lock.json; unset JITSI_IMAGE_REPO/JITSI_IMAGE_VERSION." >&2
+  exit 1
+fi
 
 DROPLET_USER="${DROPLET_USER:-root}"
 DROPLET_HOST="${DROPLET_HOST:-}"
@@ -61,15 +64,18 @@ else
 fi
 
 echo ">> Build da imagem web: ${WEB_IMAGE} (platform: ${PLATFORM})"
+PINNED_DOCKERFILE="$(mktemp)"
+trap 'rm -f "$PINNED_DOCKERFILE"' EXIT
+python3 "$SCRIPT_ROOT/scripts/runtime_images.py" web-dockerfile \
+  --source "$ROOT_DIR/docker/jitsi-core/web/Dockerfile.local" \
+  --output "$PINNED_DOCKERFILE"
 (
   cd "$ROOT_DIR"
   docker buildx build \
     --platform "$PLATFORM" \
     --load \
-    -f docker/jitsi-core/web/Dockerfile.local \
+    -f "$PINNED_DOCKERFILE" \
     -t "$WEB_IMAGE" \
-    --build-arg "JITSI_IMAGE_REPO=${JITSI_IMAGE_REPO}" \
-    --build-arg "JITSI_IMAGE_VERSION=${JITSI_IMAGE_VERSION}" \
     .
 )
 

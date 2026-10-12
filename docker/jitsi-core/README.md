@@ -47,7 +47,6 @@ BOSH_RELATIVE=1
 XMPP_MUC_MODULES=muc_default_password
 WATCHPARTY_ROOM_PASSWORD=changeme
 WATCHPARTY_APP_NAME=YourAppName
-JITSI_IMAGE_VERSION=stable-10978
 ```
 
 The room password is applied automatically to every room as soon as it's created,
@@ -103,4 +102,9 @@ avoid Firefox rejecting the self-signed certificate on `wss://localhost:8443`.
 
 The override builds `watchparty/jitsi-web:local` from the official Jitsi `web` image and replaces only the static web assets compiled from this repository. Runtime meeting config still comes from Docker env/config files and optional `/config/web/custom-config.js`.
 
-The default image version is pinned to `stable-10978` for `web`, `prosody`, `jicofo` and `jvb`. Change `JITSI_IMAGE_VERSION` deliberately when we decide to upgrade the base stack.
+The official `stable-10978` images are pinned by immutable digest in
+`images.lock.json`, Compose and the local web Dockerfile. Production loads this
+lock for the backends and Caddy. The web export script also pins the base when
+building an older frontend checkout. Legacy `JITSI_IMAGE_REPO` and
+`JITSI_IMAGE_VERSION` environment overrides no longer select runtime images.
+See [image retention and recovery](../../docs/runtime-image-lock.md).

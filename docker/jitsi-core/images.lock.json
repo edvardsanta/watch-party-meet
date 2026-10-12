@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "images": {
+    "web": {
+      "source_tag": "docker.io/jitsi/web:stable-10978",
+      "reference": "docker.io/jitsi/web@sha256:2ef0fe277ee776dd9368bff6a626b4689fdfa03a244810be1e456e911f4c330a",
+      "platforms": {
+        "linux/amd64": {
+          "manifest": "sha256:70e739ddf69b2b6ef5fc492c0b358a13a25a8822a131403970f2b7ad7766851e",
+          "image_id": "sha256:2673e5286059ab3df6e666bdd9f096c795f9af0c6770839c2b0f124c615aaaa8"
+        },
+        "linux/arm64": {
+          "manifest": "sha256:981718805b80de7b4d47e4e20666ff003d194ccd1bdbb683d23204adf29ce02b",
+          "image_id": "sha256:2d42ef6affa0e0751c399aab89d384a9a6f50179ba066419127fe2f78d89fb39"
+        }
+      }
+    },
+    "prosody": {
+      "source_tag": "docker.io/jitsi/prosody:stable-10978",
+      "reference": "docker.io/jitsi/prosody@sha256:f3ff368a016b8e4ec2d3e6d84c007672d0ac4b0358ccd915c7219091fda48730",
+      "platforms": {
+        "linux/amd64": {
+          "manifest": "sha256:f76471bdf8a9541d054183723f9f2ef1f619057ab9e269300e13e8986ab960b9",
+          "image_id": "sha256:7a989e9df09c903f471a68d76f4fd0cec1c51e5a8670103945dbcdac96d51c61"
+        },
+        "linux/arm64": {
+          "manifest": "sha256:1caa093033fa363c97abce030c6393a88ed71554bb960ee66308bd3f2822e77b",
+          "image_id": "sha256:0961c41e9897cbca50c2c4ee1093c26ed55f3818e6de85f712f6e6a360e215e1"
+        }
+      }
+    },
+    "jicofo": {
+      "source_tag": "docker.io/jitsi/jicofo:stable-10978",
+      "reference": "docker.io/jitsi/jicofo@sha256:b6d311d3e1c8726b0c3b060f54bb392465298f0320caf639620c8ff7b859434f",
+      "platforms": {
+        "linux/amd64": {
+          "manifest": "sha256:b80a70556e08980111586836010b9b9f8079f65c76b666e3625d9159fb042484",
+          "image_id": "sha256:1c5313c0360bb631a6fd5d263ceb3b385c861d5034517cb3d891a58a1f0eabb5"
+        },
+        "linux/arm64": {
+          "manifest": "sha256:dd331e0d858c49e5e9fd062c1ab83379e7c07a8e298c0a113dfda4d3691e4708",
+          "image_id": "sha256:f795eb289708da7d9501e3ef36f85c6b841b100278d5f2c926c48ae23304bd23"
+        }
+      }
+    },
+    "jvb": {
+      "source_tag": "docker.io/jitsi/jvb:stable-10978",
+      "reference": "docker.io/jitsi/jvb@sha256:734151aa303f03f63c359303dba2468157a45b37f5f26cc0ac195bbd0457273a",
+      "platforms": {
+        "linux/amd64": {
+          "manifest": "sha256:eccaa124d8abae235b4e1ad36e3562c03714dfe14e8549f625509b91d4612f8b",
+          "image_id": "sha256:95b27aef04a7912dbb849bf7887073a5716c7f57737c643049c011fa77cb4e08"
+        },
+        "linux/arm64": {
+          "manifest": "sha256:9ec72b5591ff9762441ad482fd029256a20b38fa55865f0aa19c67af3ae8abfb",
+          "image_id": "sha256:dc3afc92b1ca96ab35338a533880bac5a95f87e05f0baeaf03a328bb83611c99"
+        }
+      }
+    },
+    "caddy": {
+      "source_tag": "docker.io/library/caddy:2-alpine",
+      "reference": "docker.io/library/caddy@sha256:d8542f48d34a9cf4e4c11a478865229840e87e4c96ea3f439101f31a5d35f75f",
+      "platforms": {
+        "linux/amd64": {
+          "manifest": "sha256:173b26306d711395accaeba8b67afcaad2a085ccb1e6bf26010bfe8c095a5229",
+          "image_id": "sha256:f77f856a30f0004200b36b322d61da17fade31e24875699d77fb968399b9eb77"
+        },
+        "linux/arm64": {
+          "manifest": "sha256:84058f1a0e5beb97664a9b79dcfd267b594c033d5bb88d8463cdfb59c0779197",
+          "image_id": "sha256:f6a2207268b0f0914df9d3569e1824d6adcfa7b59fbffe0f3cbc5d2d60423f71"
+        }
+      }
+    }
+  }
+}

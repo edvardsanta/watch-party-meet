@@ -6,8 +6,7 @@ services:
             context: ../..
             dockerfile: docker/jitsi-core/web/Dockerfile.local
             args:
-                JITSI_IMAGE_REPO: ${JITSI_IMAGE_REPO:-docker.io/jitsi}
-                JITSI_IMAGE_VERSION: ${JITSI_IMAGE_VERSION:-stable-10978}
+                JITSI_WEB_IMAGE: docker.io/jitsi/web@sha256:2ef0fe277ee776dd9368bff6a626b4689fdfa03a244810be1e456e911f4c330a
 
     prosody:
         read_only: false
