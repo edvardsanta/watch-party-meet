@@ -137,3 +137,4 @@ infra/ansible/inventory.generated.ini
 infra/ansible/group_vars/production.yml
 infra/ansible/vault.yml
 infra/ansible/*.retry
+.worktrees/
