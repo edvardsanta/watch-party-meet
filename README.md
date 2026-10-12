@@ -28,8 +28,8 @@ nothing to keep in sync: the sharer presses play and the others see it.
 - **Session status.** The room says what it is waiting for (the other person, or
   a screen share) and explains when sharing was interrupted or no audio was
   captured.
-- **Automatic room passphrase.** Every room is locked with a shared passphrase as
-  soon as it is created, so a room is never reachable without it.
+- **Automatic room passphrase.** When `WATCHPARTY_ROOM_PASSWORD` is set, each new
+  room is locked with that shared passphrase as soon as it is created.
 - **A reduced interface.** The toolbar is limited to microphone, camera, screen
   share, share audio, chat, participants, tile view, settings and hang up. Polls,
   reactions, the welcome page, deep linking and the self-view tile are turned
@@ -78,7 +78,10 @@ reference.
 ## Security
 
 - Rooms are locked with a passphrase set automatically when the room is created
-  (`docker/jitsi-core/prosody/prosody-plugins-custom/mod_muc_default_password.lua`).
+  (`docker/jitsi-core/prosody/prosody-plugins-custom/mod_muc_default_password.lua`),
+  provided `WATCHPARTY_ROOM_PASSWORD` is non-empty and the `muc_default_password`
+  module is enabled. If the variable is empty, the plugin only logs a warning and
+  rooms are not locked.
 - The production example sets `enable_p2p: false`, so media goes through your own
   Jitsi Videobridge rather than directly between participants.
 - Beyond that, the security model is Jitsi's. See

@@ -90,10 +90,12 @@ use them (section 6) beyond describing where this work comes from, and we make
 no claim to them.
 
 The repository still contains upstream branding assets such as
-`images/jitsilogo.png` and `images/watermark.svg`. They are not displayed in
-Watch Party: `interface_config.js` sets `SHOW_JITSI_WATERMARK` and
-`SHOW_BRAND_WATERMARK` to `false`. Anyone redistributing this code under their
-own name should replace or remove them.
+`images/jitsilogo.png` and `images/watermark.svg`. `interface_config.js` sets
+`SHOW_JITSI_WATERMARK` and `SHOW_BRAND_WATERMARK` to `false`, which keeps the
+watermark hidden inside a conference, but the client can still show
+`images/watermark.svg` when there is no valid room
+(`react/features/base/react/components/web/Watermarks.tsx`). Anyone
+redistributing this code under their own name should replace or remove them.
 
 ## Other third-party software
 
