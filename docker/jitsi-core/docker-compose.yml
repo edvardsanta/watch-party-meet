@@ -1,7 +1,7 @@
 services:
     # Frontend
     web:
-        image: ${JITSI_IMAGE_REPO:-docker.io/jitsi}/web:${JITSI_IMAGE_VERSION:-stable-10978}
+        image: docker.io/jitsi/web@sha256:2ef0fe277ee776dd9368bff6a626b4689fdfa03a244810be1e456e911f4c330a
         restart: ${RESTART_POLICY:-unless-stopped}
         read_only: true
         tmpfs:
@@ -206,7 +206,7 @@ services:
 
     # XMPP server
     prosody:
-        image: ${JITSI_IMAGE_REPO:-docker.io/jitsi}/prosody:${JITSI_IMAGE_VERSION:-stable-10978}
+        image: docker.io/jitsi/prosody@sha256:f3ff368a016b8e4ec2d3e6d84c007672d0ac4b0358ccd915c7219091fda48730
         restart: ${RESTART_POLICY:-unless-stopped}
         read_only: true
         tmpfs:
@@ -367,7 +367,7 @@ services:
 
     # Focus component
     jicofo:
-        image: ${JITSI_IMAGE_REPO:-docker.io/jitsi}/jicofo:${JITSI_IMAGE_VERSION:-stable-10978}
+        image: docker.io/jitsi/jicofo@sha256:b6d311d3e1c8726b0c3b060f54bb392465298f0320caf639620c8ff7b859434f
         restart: ${RESTART_POLICY:-unless-stopped}
         read_only: true
         tmpfs:
@@ -470,7 +470,7 @@ services:
 
     # Video bridge
     jvb:
-        image: ${JITSI_IMAGE_REPO:-docker.io/jitsi}/jvb:${JITSI_IMAGE_VERSION:-stable-10978}
+        image: docker.io/jitsi/jvb@sha256:734151aa303f03f63c359303dba2468157a45b37f5f26cc0ac195bbd0457273a
         restart: ${RESTART_POLICY:-unless-stopped}
         read_only: true
         tmpfs:

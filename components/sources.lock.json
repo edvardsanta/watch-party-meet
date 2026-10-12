@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "runtime_baseline": "stable-10978",
+  "sources": [
+    {
+      "name": "jicofo",
+      "path": "components/jicofo",
+      "upstream": "https://github.com/jitsi/jicofo",
+      "ref": "stable/jitsi-meet_10978",
+      "commit": "593462ca9456d29fdf2803225feb6f6415ddae86",
+      "git_tree": "075058b4342857008befc01e3cdc0a1757411e3a",
+      "license": "Apache-2.0",
+      "license_files": [
+        "LICENSE"
+      ],
+      "sha256_tree": "3ad78d2f024c279176a9ad2b9402427c5d0ec061559fb453fde661468131b5a9",
+      "file_count": 232,
+      "import_method": "git archive HEAD; no source modifications"
+    },
+    {
+      "name": "jitsi-videobridge",
+      "path": "components/jitsi-videobridge",
+      "upstream": "https://github.com/jitsi/jitsi-videobridge",
+      "ref": "stable/jitsi-meet_10978",
+      "commit": "b4b5ccc8c9ec83f224a661300c899a1cbb62ca2d",
+      "git_tree": "7f83d6407dc0f6481a89358193630c2a297e2bde",
+      "license": "Apache-2.0",
+      "license_files": [
+        "LICENSE"
+      ],
+      "sha256_tree": "a73af15faa2503624289bb3830de50c99684f3d0138ae83bf4bbd0e9816b2b40",
+      "file_count": 636,
+      "import_method": "git archive HEAD; no source modifications"
+    },
+    {
+      "name": "lib-jitsi-meet",
+      "path": "components/lib-jitsi-meet",
+      "upstream": "https://github.com/jitsi/lib-jitsi-meet",
+      "ref": "28875bfa987e6ca8dd5f16b441edd21683213df0",
+      "commit": "28875bfa987e6ca8dd5f16b441edd21683213df0",
+      "git_tree": "d92d05f3e698d3bd76bfd44f0cf4681401d62c96",
+      "license": "Apache-2.0",
+      "license_files": [
+        "LICENSE"
+      ],
+      "sha256_tree": "5fd4d7fb7bde8438b863ef31c479ede8cdedd2c2098ea57c4daebc40599c0ca4",
+      "file_count": 266,
+      "import_method": "git archive HEAD; no source modifications"
+    },
+    {
+      "name": "tpl",
+      "path": "components/tpl",
+      "upstream": "https://github.com/jitsi/tpl",
+      "ref": "v1.5.0",
+      "commit": "f887c7d4bd09425e6f4ab5cea0e39ca826b5b3a2",
+      "git_tree": "d8e34a2fb59826c77baac0cd52552fb5bdcad62c",
+      "license": "Apache-2.0",
+      "license_files": [
+        "LICENSE"
+      ],
+      "sha256_tree": "645b8a38c5c4ee341717ac4804ee0947c0f889620ef683af90567cd3c5b4d88e",
+      "file_count": 9,
+      "import_method": "git archive HEAD; no source modifications"
+    }
+  ]
+}

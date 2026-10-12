@@ -10,6 +10,8 @@ doc/*
 # Third-party source code which we (1) do not want to modify or (2) try to
 # modify as little as possible.
 libs/*
+# Imported projects have their own lint configurations and dependency trees.
+components/*
 resources/*
 react/features/stream-effects/virtual-background/vendor/*
 react/features/face-landmarks/resources/*
