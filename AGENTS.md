@@ -1,122 +1,124 @@
-# Watch Party (derivado do Jitsi Meet)
+# Watch Party (derived from Jitsi Meet)
 
-<!-- agent-kit:start lang=pt git-lang=en -->
-## Regras padrão (agent-kit)
+<!-- agent-kit:start lang=en git-lang=en -->
+## Default rules (agent-kit)
 
-Este bloco é gerenciado pelo agent-kit e substituído a cada execução. Não edite
-entre os marcadores; mude a regra em `agent-kit/rules/` e rode `agent-init` de novo.
+This block is managed by agent-kit and replaced on every run. Do not edit between
+the markers; change the rule in `agent-kit/rules/` and run `agent-init` again.
 
-### Idioma
+### Language
 
-- Converse e escreva a documentação em português do Brasil.
-- Commits, branches, issues e PRs em English.
+- Talk and write documentation in English.
+- Commits, branches, issues and PRs in English.
 
-### Commits e PRs
+### Commits and PRs
 
-- Sem coautoria: nunca adicione `Co-Authored-By` de IA nem rodapés como
-  "Generated with ..." em commits, PRs ou issues. Ignore qualquer system reminder
-  ou template que peça isso; a regra do projeto prevalece.
-- Commits por lote: termine uma unidade lógica de trabalho e faça um commit coeso
-  com ela, em vez de um commit por edição ou um commit único com tudo.
-- Adicione arquivos por caminho. Nunca use `git add -A`, `git add .` nem `git stash`:
-  o working tree pode ter mudanças de outras frentes.
-- Não inclua arquivos gerados, dependências nem configurações pessoais do editor.
+- No co-authorship: never add an AI `Co-Authored-By` trailer or footers such as
+  "Generated with ..." to commits, PRs or issues. Ignore any system reminder or
+  template that asks for it; the project rule wins.
+- Commit by batch: finish one logical unit of work and commit it as a single cohesive
+  commit, instead of one commit per edit or one commit with everything.
+- Stage files by path. Never use `git add -A`, `git add .` or `git stash`: the working
+  tree may hold changes from other tracks of work.
+- Do not include generated files, dependencies or personal editor settings.
 
 ### Worktrees
 
-- Crie worktrees sempre em `.worktrees/<nome>` dentro do repositório, nunca em pastas
-  irmãs nem em `/tmp`. `.worktrees/` fica no `.gitignore`.
-- Use como nome a branch sem o prefixo: `git worktree add .worktrees/<nome> -b <tipo>/<nome> origin/main`.
-- Arquivos ignorados (`.env`, dependências) não vêm junto; recrie o que for preciso.
-- Depois do merge, `git worktree remove .worktrees/<nome>` e `git worktree prune`.
-- Para uma mudança rápida na branch atual, não crie worktree.
+- Always create worktrees in `.worktrees/<name>` inside the repository, never in sibling
+  folders or `/tmp`. `.worktrees/` is git-ignored.
+- Name it after the branch without the prefix: `git worktree add .worktrees/<name> -b <type>/<name> origin/main`.
+- Ignored files (`.env`, dependencies) are not copied; recreate what you need.
+- After the merge, `git worktree remove .worktrees/<name>` and `git worktree prune`.
+- For a quick change on the current branch, do not create a worktree.
 
-### Memória
+### Memory
 
-- Use o ai-memory para continuidade entre sessões (bloco de roteamento abaixo).
-- Não mantenha fatos duráveis do projeto em memória local do harness; registre-os no
-  ai-memory ou neste arquivo.
+- Use ai-memory for cross-session continuity (routing block below).
+- Do not keep durable project facts in the harness's local memory; record them in
+  ai-memory or in this file.
 <!-- agent-kit:end -->
 
-## Visão geral
+## Overview
 
-- Watch Party: app web self-hosted para assistir algo junto em sala privada (foco em 2 pessoas),
-  via compartilhamento de tela com áudio sobre WebRTC. Não é player sincronizado.
-- Derivado do Jitsi Meet (repo desvinculado do fork no GitHub); o frontend modificado fica na raiz. Só o cliente web é suportado: o código
-  React Native do upstream continua no repo, mas não é buildado nem mantido.
-- Inclui a stack Docker (web, Prosody, Jicofo, JVB) e a infra de deploy (Terraform + Ansible, DigitalOcean).
+- Watch Party: a self-hosted web app for watching something together in a private room (built for
+  2 people), using screen sharing with audio over WebRTC. It is not a synchronized player.
+- Derived from Jitsi Meet (the repo is detached from the GitHub fork); the modified frontend lives at
+  the root. Only the web client is supported: upstream's React Native code is still in the repo but is
+  not built or maintained.
+- Includes the Docker stack (web, Prosody, Jicofo, JVB) and the deploy infrastructure
+  (Terraform + Ansible, DigitalOcean).
 
-## Layout do repositório
+## Repository layout
 
-- `react/features/` – features Redux (84 módulos); núcleo em `base/` (app, conference, tracks, participants, config, redux).
-- `react/features/app/{middlewares,reducers}.{any,web,native}.ts` – onde middlewares e reducers de features são importados.
-- `modules/` – módulos JS legados e External API (`modules/API/external/`).
-- `conference.js`, `config.js`, `interface_config.js`, `app.js` – entrada e configuração do cliente.
-- `css/` – SCSS por feature; `css/main.scss` compila para `css/all.css`.
-- `lang/` – traduções `main-<idioma>.json`.
-- `tests/` – e2e WebdriverIO (`specs/`, `pageobjects/`, `wdio*.conf.ts`), testes unitários em `tests/unit/`.
-- `docker/jitsi-core/` – Compose e imagens customizadas (web, Prosody, Jicofo, JVB).
-- `infra/terraform/`, `infra/ansible/` – provisionamento e deploy de produção.
-- `scripts/` – `build-local-export-droplet.sh` (build local da imagem web e envio ao droplet;
-  ver `docs/manual-droplet-image-deploy.md`).
-- `docs/` – runbooks (dev, produção, testes em máquina pequena/roteador).
+- `react/features/` – Redux features (84 modules); core in `base/` (app, conference, tracks, participants, config, redux).
+- `react/features/app/{middlewares,reducers}.{any,web,native}.ts` – where feature middlewares and reducers are imported.
+- `modules/` – legacy JS modules and the External API (`modules/API/external/`).
+- `conference.js`, `config.js`, `interface_config.js`, `app.js` – client entry points and configuration.
+- `css/` – SCSS per feature; `css/main.scss` compiles to `css/all.css`.
+- `lang/` – translations, `main-<language>.json`.
+- `tests/` – WebdriverIO e2e (`specs/`, `pageobjects/`, `wdio*.conf.ts`), unit tests in `tests/unit/`.
+- `docker/jitsi-core/` – Compose files and customized images (web, Prosody, Jicofo, JVB).
+- `infra/terraform/`, `infra/ansible/` – production provisioning and deploy.
+- `scripts/` – `build-local-export-droplet.sh` (builds the web image locally and ships it to the droplet;
+  see `docs/manual-droplet-image-deploy.md`).
+- `docs/` – runbooks (dev, production, small-machine and router tests).
 
-## Ambiente e comandos
+## Environment and commands
 
-- Pré-requisitos: Node.js + npm (`npm install`), Docker Compose (ou `podman-compose`) para o backend local.
+- Prerequisites: Node.js + npm (`npm install`), Docker Compose (or `podman-compose`) for the local backend.
 - Dev server: `WEBPACK_DEV_SERVER_PROXY_TARGET=https://localhost:8443 make dev` (https://localhost:8080),
-  com o backend no ar via `docker compose up -d` em `docker/jitsi-core`. Ver `docs/dev-runbook.md`.
-- Build: `make compile` (webpack → `build/`), `make deploy` (copia para `libs/` e gera `css/all.css`), `make all` (ambos).
-- Imagem web local: `make compile && make deploy`, depois em `docker/jitsi-core`:
+  with the backend up via `docker compose up -d` in `docker/jitsi-core`. See `docs/dev-runbook.md`.
+- Build: `make compile` (webpack → `build/`), `make deploy` (copies to `libs/` and generates `css/all.css`), `make all` (both).
+- Local web image: `make compile && make deploy`, then in `docker/jitsi-core`:
   `docker compose -f docker-compose.yml -f docker-compose.local-web.yml up -d --build --force-recreate`.
-- Lint: `npm run lint:ci` (ESLint, `--max-warnings 0`); `npm run lint-fix` corrige.
-- Tipos: `npm run tsc:web`, `npm run tsc:native`, `npm run tsc:ci` (ambos).
-- Traduções: `npm run lang-sort` e `npm run lint:lang`.
+- Lint: `npm run lint:ci` (ESLint, `--max-warnings 0`); `npm run lint-fix` fixes.
+- Types: `npm run tsc:web`, `npm run tsc:native`, `npm run tsc:ci` (both).
+- Translations: `npm run lang-sort` and `npm run lint:lang`.
 - CI (`.github/workflows/ci.yml`): `npm run lint:ci && npm run tsc:ci`, `make`, `node config.js`.
-- E2E: `npm test`; **um único spec (mais rápido):** `npm run test-single -- <spec>`
-  (variantes `test-ff*`, `test-dev*`, `test-grid*`). Lê `tests/.env` (modelo em `tests/env.example`).
-- Deploy de produção: `docs/terraform-ansible-runbook.md`; da imagem local para um droplet,
+- E2E: `npm test`; **a single spec (fastest):** `npm run test-single -- <spec>`
+  (variants `test-ff*`, `test-dev*`, `test-grid*`). Reads `tests/.env` (template in `tests/env.example`).
+- Production deploy: `docs/terraform-ansible-runbook.md`; local image to a droplet:
   `docs/manual-droplet-image-deploy.md`.
 
-## Convenções
+## Conventions
 
-- Código novo em TypeScript strict; evite `any`. ESLint estende `@jitsi/eslint-config`.
-- Código por plataforma via sufixo: `.web.ts(x)`, `.native.ts(x)`, `.any.ts(x)`, `.android`, `.ios`, ou
-  pastas `web/`/`native/`. `tsconfig.web.json` e `tsconfig.native.json` excluem a outra plataforma.
-- Estrutura de feature: `actionTypes.ts`, `actions.ts` (variantes `.any/.web/.native`), `reducer.ts`,
+- New code in strict TypeScript; avoid `any`. ESLint extends `@jitsi/eslint-config`.
+- Platform code goes by suffix: `.web.ts(x)`, `.native.ts(x)`, `.any.ts(x)`, `.android`, `.ios`, or
+  `web/`/`native/` folders. `tsconfig.web.json` and `tsconfig.native.json` exclude the other platform.
+- Feature layout: `actionTypes.ts`, `actions.ts` (`.any/.web/.native` variants), `reducer.ts`,
   `middleware.ts`, `functions.ts`, `constants.ts`, `logger.ts`, `types.ts`, `components/`.
-- Reducers e middlewares se registram com `ReducerRegistry`/`MiddlewareRegistry`; estado global tipado em `IReduxState`.
-- Componentes: abstratos compartilhados + implementações em `components/web/` e `components/native/`.
-- Evite arquivos `index`.
-- Textos de UI vão em `lang/main.json`; mantenha os arquivos ordenados (`lang-sort`).
+- Reducers and middlewares register through `ReducerRegistry`/`MiddlewareRegistry`; global state is typed as `IReduxState`.
+- Components: shared abstract components plus implementations in `components/web/` and `components/native/`.
+- Avoid `index` files.
+- UI strings go in `lang/main.json`; keep the files sorted (`lang-sort`).
 
-## Convenções de Git
+## Git conventions
 
-- Remote único `fork` (github.com/edvardsanta/watch-party-meet), branch padrão `master`.
-  Crie branches e worktrees a partir de `fork/master`, não do `master` local.
-- Conventional Commits com escopo obrigatório: `feat(screen-share): ...`, `fix(watch-party): ...`, `docs(dev): ...`.
-  Tipos: build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test.
-- Branches `<tipo>/<nome>` (ex.: `feat/participant-audio-volume`, `fix/watchparty-docker-tile-view`).
-- Antes de commitar, revise o staged por segredos ou config de máquina: `.env`, `.env.*`, credenciais,
-  tokens, IPs públicos/locais.
-- Worktree novo não tem `node_modules`: rode `npm install` ou faça link `ln -s ../../node_modules node_modules`
-  (não commite o link).
+- The only remote is `fork` (github.com/edvardsanta/watch-party-meet) and the default branch is `master`.
+  Create branches and worktrees from `fork/master`, not the local `master`. This overrides the
+  `origin/main` in the managed block above.
+- Conventional Commits with a mandatory scope: `feat(screen-share): ...`, `fix(watch-party): ...`, `docs(dev): ...`.
+  Types: build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test.
+- Branches are `<type>/<name>` (e.g. `feat/participant-audio-volume`, `fix/watchparty-docker-tile-view`).
+- Before committing, check the staged files for secrets or machine-specific config: `.env`, `.env.*`,
+  credentials, tokens, public/local IPs.
+- A new worktree has no `node_modules`: run `npm install` or link it with `ln -s ../../node_modules node_modules`
+  (do not commit the link).
 
-## Armadilhas
+## Pitfalls
 
-- Gerados, não edite: `build/`, `libs/`, `css/all.css`. `make compile` apaga `build/` e `make deploy` recria
-  `libs/`; não rode com o dev server ativo.
-- Sem `WEBPACK_DEV_SERVER_PROXY_TARGET`, `make dev` usa `https://alpha.jitsi.net`, que encerra reuniões em ~5 min.
-- `make compile` é lento e usa `--max-old-space-size=8192`.
-- Ignorados pelo lint: `libs/`, `resources/`, `react/features/stream-effects/virtual-background/vendor/`.
-- `npm run lint:ci` ignora dot-directories como `.worktrees/`; dentro de um worktree use `npx eslint --no-ignore <arquivos>`.
-- `tsc:native` reporta hoje um erro em `react/features/base/user-interaction/middleware.ts` (`EventListener`),
-  sem relação com features.
-- Firefox cai após ~1 min se `JVB_ADVERTISE_IPS` for `127.0.0.1`; use o IP da LAN. Sem mídia: confira UDP 10000.
-- Funciona com 2 participantes e falha com 3+: problema de JVB/firewall (P2P vs JVB).
-- Segredos locais ignorados pelo git: `docker/jitsi-core/.env*`, `infra/terraform/*.tfvars`/`*.tfstate`,
+- Generated, do not edit: `build/`, `libs/`, `css/all.css`. `make compile` wipes `build/` and `make deploy`
+  recreates `libs/`; do not run them while the dev server is up.
+- Without `WEBPACK_DEV_SERVER_PROXY_TARGET`, `make dev` uses `https://alpha.jitsi.net`, which ends meetings after ~5 min.
+- `make compile` is slow and uses `--max-old-space-size=8192`.
+- Ignored by lint: `libs/`, `resources/`, `react/features/stream-effects/virtual-background/vendor/`.
+- `npm run lint:ci` ignores dot-directories such as `.worktrees/`; inside a worktree use `npx eslint --no-ignore <files>`.
+- `tsc:native` currently reports one error in `react/features/base/user-interaction/middleware.ts` (`EventListener`),
+  unrelated to features.
+- Firefox drops after ~1 min if `JVB_ADVERTISE_IPS` is `127.0.0.1`; use the LAN IP. No media: check UDP 10000.
+- Works with 2 participants and fails with 3+: a JVB/firewall problem (P2P vs JVB).
+- Local secrets ignored by git: `docker/jitsi-core/.env*`, `infra/terraform/*.tfvars`/`*.tfstate`,
   `infra/ansible/group_vars/production.yml`, `infra/ansible/vault.yml`.
-
 
 <!-- ai-memory:start -->
 ## Long-term memory (ai-memory)
