@@ -258,6 +258,8 @@ function _mapStateToProps(state: IReduxState, ownProps: any) {
                     chatWithPermissionsEnabled: tabState?.chatWithPermissionsEnabled,
                     followMeEnabled: tabState?.followMeEnabled,
                     followMeRecorderEnabled: tabState?.followMeRecorderEnabled,
+                    roomThemeAccent: tabState?.roomThemeAccent,
+                    roomThemeId: tabState?.roomThemeId,
                     startAudioMuted: tabState?.startAudioMuted,
                     startVideoMuted: tabState?.startVideoMuted,
                     startReactionsMuted: tabState?.startReactionsMuted

@@ -101,7 +101,7 @@
 
 .watch-fullscreen-button:hover,
 .watch-fullscreen-button:focus-visible {
-    background: rgba(255, 255, 255, .16);
+    background: var(--wp-accent, rgba(255, 255, 255, .16));
     outline: none;
 }
 
@@ -109,6 +109,11 @@
     height: 100dvh;
     overflow: hidden;
     width: 100dvw;
+
+    // The room theme stays out of the letterbox so nothing competes with what is being watched.
+    #largeVideoContainer {
+        background: #040404 !important;
+    }
 
     #videospace,
     #largeVideoContainer,

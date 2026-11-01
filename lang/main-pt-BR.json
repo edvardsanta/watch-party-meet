@@ -1075,6 +1075,17 @@
         "participantLeft": "Participante saiu",
         "playSounds": "Tocar sons",
         "reactions": "Reações da reunião",
+        "roomTheme": "Tema da sala",
+        "roomThemeAccent": "Cor de destaque",
+        "roomThemeCustomAccent": "Usar uma cor de destaque personalizada",
+        "roomThemes": {
+            "default": "Padrão",
+            "epic": "Cinema épico",
+            "fairytale": "Conto de fadas",
+            "horror": "Terror",
+            "pinkGlam": "Rosa glamour",
+            "princess": "Princesa"
+        },
         "sameAsSystem": "Igual ao sistema ({{label}})",
         "selectAudioOutput": "Saída de áudio",
         "selectCamera": "Câmera",
