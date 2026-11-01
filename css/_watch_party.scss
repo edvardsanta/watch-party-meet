@@ -147,23 +147,6 @@
     }
 }
 
-#largeVideoContainer:fullscreen,
-#largeVideoContainer:-webkit-full-screen {
-    height: 100dvh !important;
-    width: 100dvw !important;
-
-    #largeVideoElementsContainer,
-    #largeVideoWrapper,
-    #largeVideo,
-    #largeVideoWrapper > object,
-    #largeVideoWrapper > video {
-        height: 100% !important;
-        inset: 0 !important;
-        object-fit: contain !important;
-        width: 100% !important;
-    }
-}
-
 @media (orientation: landscape) and (max-height: 480px) {
     .watch-fullscreen-button {
         height: 36px;
