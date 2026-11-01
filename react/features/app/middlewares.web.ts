@@ -18,6 +18,7 @@ import '../pip/middleware';
 import '../power-monitor/middleware';
 import '../prejoin/middleware';
 import '../remote-control/middleware';
+import '../room-theme/subscriber.web';
 import '../screen-share/middleware';
 import '../shared-video/middleware';
 import '../web-hid/middleware';

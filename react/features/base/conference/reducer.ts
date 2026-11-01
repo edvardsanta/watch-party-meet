@@ -92,6 +92,11 @@ export interface IConferenceMetadata {
     visitors?: {
         live: boolean;
     };
+
+    /**
+     * The theme of the room. Written by moderators, so it has to go through {@code parseRoomTheme} before being used.
+     */
+    watchPartyTheme?: unknown;
     whiteboard?: {
         collabDetails: {
             roomId: string;

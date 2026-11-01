@@ -7,6 +7,8 @@ import AbstractDialogTab, {
     IProps as AbstractDialogTabProps } from '../../../base/dialog/components/web/AbstractDialogTab';
 import { translate } from '../../../base/i18n/functions';
 import Checkbox from '../../../base/ui/components/web/Checkbox';
+import Select from '../../../base/ui/components/web/Select';
+import { DEFAULT_CUSTOM_ACCENT, ROOM_THEME_PRESETS } from '../../../room-theme/constants';
 
 /**
  * The type of the React {@code Component} props of {@link ModeratorTab}.
@@ -63,9 +65,24 @@ export interface IProps extends AbstractDialogTabProps, WithTranslation {
     hideChatWithPermissions: boolean;
 
     /**
+     * The custom accent color of the room theme, as {@code #rrggbb}.
+     */
+    roomThemeAccent?: string;
+
+    /**
+     * The preset selected as the room theme.
+     */
+    roomThemeId: string;
+
+    /**
      * Whether the audio-translation room toggle should be shown (i.e. the feature is deployed).
      */
     showAudioTranslation: boolean;
+
+    /**
+     * Whether the room theme can be changed, which depends on the room metadata component of the backend.
+     */
+    showRoomTheme: boolean;
 
     /**
      * Whether or not the user has selected the Start Audio Muted feature to be
@@ -106,6 +123,19 @@ const styles = (theme: Theme) => {
 
         checkbox: {
             marginBottom: theme.spacing(3)
+        },
+
+        roomTheme: {
+            marginBottom: theme.spacing(3)
+        },
+
+        roomThemeAccent: {
+            ...theme.typography.bodyShortRegular,
+            alignItems: 'center',
+            color: theme.palette.settingsTabText,
+            display: 'flex',
+            gap: theme.spacing(2),
+            marginBottom: theme.spacing(3)
         }
     };
 };
@@ -133,6 +163,42 @@ class ModeratorTab extends AbstractDialogTab<IProps, any> {
         this._onFollowMeRecorderEnabledChanged = this._onFollowMeRecorderEnabledChanged.bind(this);
         this._onChatWithPermissionsChanged = this._onChatWithPermissionsChanged.bind(this);
         this._onAudioTranslationEnabledChanged = this._onAudioTranslationEnabledChanged.bind(this);
+        this._onRoomThemeChanged = this._onRoomThemeChanged.bind(this);
+        this._onRoomThemeAccentEnabledChanged = this._onRoomThemeAccentEnabledChanged.bind(this);
+        this._onRoomThemeAccentChanged = this._onRoomThemeAccentChanged.bind(this);
+    }
+
+    /**
+     * Callback invoked to select the preset of the room theme.
+     *
+     * @param {Object} e - The key event to handle.
+     *
+     * @returns {void}
+     */
+    _onRoomThemeChanged({ target: { value } }: React.ChangeEvent<HTMLSelectElement>) {
+        super._onChange({ roomThemeId: value });
+    }
+
+    /**
+     * Callback invoked to enable or disable the custom accent color of the room theme.
+     *
+     * @param {Object} e - The key event to handle.
+     *
+     * @returns {void}
+     */
+    _onRoomThemeAccentEnabledChanged({ target: { checked } }: React.ChangeEvent<HTMLInputElement>) {
+        super._onChange({ roomThemeAccent: checked ? DEFAULT_CUSTOM_ACCENT : undefined });
+    }
+
+    /**
+     * Callback invoked to select the custom accent color of the room theme.
+     *
+     * @param {Object} e - The key event to handle.
+     *
+     * @returns {void}
+     */
+    _onRoomThemeAccentChanged({ target: { value } }: React.ChangeEvent<HTMLInputElement>) {
+        super._onChange({ roomThemeAccent: value });
     }
 
     /**
@@ -239,7 +305,10 @@ class ModeratorTab extends AbstractDialogTab<IProps, any> {
             followMeRecorderActive,
             followMeRecorderEnabled,
             hideChatWithPermissions,
+            roomThemeAccent,
+            roomThemeId,
             showAudioTranslation,
+            showRoomTheme,
             startAudioMuted,
             startVideoMuted,
             startReactionsMuted,
@@ -304,6 +373,34 @@ class ModeratorTab extends AbstractDialogTab<IProps, any> {
                         label = { t('settings.audioTranslation') }
                         name = 'audio-translation'
                         onChange = { this._onAudioTranslationEnabledChanged } /> }
+                { showRoomTheme && <>
+                    <Select
+                        className = { classes.roomTheme }
+                        id = 'room-theme'
+                        label = { t('settings.roomTheme') }
+                        onChange = { this._onRoomThemeChanged }
+                        options = { Object.keys(ROOM_THEME_PRESETS).map(id => {
+                            return {
+                                label: t(`settings.roomThemes.${id}`),
+                                value: id
+                            };
+                        }) }
+                        value = { roomThemeId } />
+                    <Checkbox
+                        checked = { Boolean(roomThemeAccent) }
+                        className = { classes.checkbox }
+                        label = { t('settings.roomThemeCustomAccent') }
+                        name = 'room-theme-custom-accent'
+                        onChange = { this._onRoomThemeAccentEnabledChanged } />
+                    { roomThemeAccent
+                        && <label className = { classes.roomThemeAccent }>
+                            <input
+                                onChange = { this._onRoomThemeAccentChanged }
+                                type = 'color'
+                                value = { roomThemeAccent } />
+                            { t('settings.roomThemeAccent') }
+                        </label> }
+                </> }
             </div>
         );
     }

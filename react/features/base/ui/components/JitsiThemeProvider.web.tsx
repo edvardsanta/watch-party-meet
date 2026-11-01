@@ -41,9 +41,10 @@ function JitsiThemeProvider(props: IProps) {
  */
 function _mapStateToProps(state: IReduxState) {
     const { muiBrandedTheme } = state['features/dynamic-branding'];
+    const { muiTheme: roomTheme } = state['features/room-theme'];
 
     return {
-        _theme: muiBrandedTheme || BaseTheme
+        _theme: roomTheme || muiBrandedTheme || BaseTheme
     };
 }
 
