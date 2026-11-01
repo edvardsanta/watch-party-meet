@@ -1746,7 +1746,8 @@
             "waitingTitle": "Waiting for the host"
         },
         "fullscreen": {
-            "enter": "Enter fullscreen"
+            "enter": "Enter fullscreen",
+            "exit": "Exit fullscreen"
         },
         "prejoin": {
             "errorMissingName": "Enter your name to join the session",

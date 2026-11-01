@@ -1482,7 +1482,8 @@
             "waitingTitle": "Aguardando o anfitrião"
         },
         "fullscreen": {
-            "enter": "Entrar em tela cheia"
+            "enter": "Entrar em tela cheia",
+            "exit": "Sair da tela cheia"
         },
         "prejoin": {
             "errorMissingName": "Digite seu nome para entrar na sessão",
