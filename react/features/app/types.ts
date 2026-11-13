@@ -69,6 +69,7 @@ import { IReactionsState } from '../reactions/reducer';
 import { IRecentListState } from '../recent-list/reducer';
 import { IRecordingState } from '../recording/reducer';
 import { IRemoteControlState } from '../remote-control/reducer';
+import { IRoomThemeState } from '../room-theme/reducer';
 import { IScreenShareState } from '../screen-share/reducer';
 import { IScreenshotCaptureState } from '../screenshot-capture/reducer';
 import { IShareRoomState } from '../share-room/reducer';
@@ -162,6 +163,7 @@ export interface IReduxState {
     'features/recent-list': IRecentListState;
     'features/recording': IRecordingState;
     'features/remote-control': IRemoteControlState;
+    'features/room-theme': IRoomThemeState;
     'features/screen-share': IScreenShareState;
     'features/screenshot-capture': IScreenshotCaptureState;
     'features/settings': ISettingsState;

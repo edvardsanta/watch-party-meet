@@ -13,6 +13,8 @@ import { parseStandardURIString } from '../base/util/uri';
 import { isStageFilmstripEnabled } from '../filmstrip/functions';
 import { isFollowMeActive, isFollowMeRecorderActive } from '../follow-me/functions';
 import { isReactionsEnabled } from '../reactions/functions.any';
+import { DEFAULT_ROOM_THEME_ID, ROOM_THEME_METADATA_KEY } from '../room-theme/constants';
+import { parseRoomTheme } from '../room-theme/functions';
 import { areClosedCaptionsEnabled } from '../subtitles/functions.any';
 import { iAmVisitor } from '../visitors/functions';
 
@@ -174,6 +176,7 @@ export function getModeratorTabProps(stateful: IStateful) {
     const hideChatWithPermissions = !showChatPermissionsModeratorSetting || conferenceMetadata?.allownersEnabled;
     const isAudioModerationEnabled = isEnabledFromState(MEDIA_TYPE.AUDIO, state);
     const isVideoModerationEnabled = isEnabledFromState(MEDIA_TYPE.VIDEO, state);
+    const roomTheme = parseRoomTheme(conferenceMetadata?.[ROOM_THEME_METADATA_KEY]);
 
     // The settings sections to display.
     return {
@@ -189,6 +192,9 @@ export function getModeratorTabProps(stateful: IStateful) {
         followMeRecorderActive: Boolean(conference && followMeRecorderActive),
         followMeRecorderEnabled: Boolean(conference && followMeRecorderEnabled),
         hideChatWithPermissions: Boolean(hideChatWithPermissions),
+        roomThemeAccent: roomTheme?.accent,
+        roomThemeId: roomTheme?.id ?? DEFAULT_ROOM_THEME_ID,
+        showRoomTheme: Boolean(conference?.getMetadataHandler()?.isSupported()),
         startReactionsMuted: Boolean(conference && startReactionsMuted),
         startAudioMuted: Boolean(conference && startAudioMutedPolicy),
         startVideoMuted: Boolean(conference && startVideoMutedPolicy)

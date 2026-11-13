@@ -20,6 +20,7 @@ import { getLocalVideoTrack } from '../base/tracks/functions.web';
 import { appendURLHashParam } from '../base/util/uri';
 import { setFollowMe, setFollowMeRecorder } from '../follow-me/actions';
 import { disableKeyboardShortcuts, enableKeyboardShortcuts } from '../keyboard-shortcuts/actions';
+import { ROOM_THEME_METADATA_KEY } from '../room-theme/constants';
 import { toggleBackgroundEffect } from '../virtual-background/actions';
 import virtualBackgroundLogger from '../virtual-background/logger';
 
@@ -215,6 +216,16 @@ export function submitModeratorTab(newState: any) {
 
             conference?.getMetadataHandler().setMetadata('audioTranslation', {
                 enabled: newState.audioTranslationEnabled
+            });
+        }
+
+        if (newState.roomThemeId !== currentState.roomThemeId
+            || newState.roomThemeAccent !== currentState.roomThemeAccent) {
+            const { conference } = getState()['features/base/conference'];
+
+            conference?.getMetadataHandler().setMetadata(ROOM_THEME_METADATA_KEY, {
+                accent: newState.roomThemeAccent,
+                id: newState.roomThemeId
             });
         }
     };
