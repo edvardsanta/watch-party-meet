@@ -110,7 +110,7 @@ var interfaceConfig = {
     RECENT_LIST_ENABLED: false,
     REMOTE_THUMBNAIL_RATIO: 1, // 1:1
 
-    SETTINGS_SECTIONS: [ 'devices', 'shortcuts' ],
+    SETTINGS_SECTIONS: [ 'devices', 'moderator', 'shortcuts' ],
 
     /**
      * Specify which sharing features should be displayed. If the value is not set
