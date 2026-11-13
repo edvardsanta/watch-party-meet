@@ -159,7 +159,9 @@ StateListenerRegistry.register(
         }
 
         if (conference !== previousConference) {
-            dispatch(updateConferenceMetadata(null));
+            dispatch(updateConferenceMetadata(
+                conference?.getMetadataHandler()?.getMetadata() ?? null
+            ));
         }
     });
 
